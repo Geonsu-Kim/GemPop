@@ -26,14 +26,14 @@ public class BlockCellPoolManager : SingletonBase<BlockCellPoolManager>
             newCell.SetActive(false);
             newCell.name = nameCell;
             Pool_Cell.Add(newCell);
-        }/*
+        }
         for (int i = 0; i < 200; i++)
         {
             GameObject newBlock = Instantiate(blockObj);
             newBlock.SetActive(false);
             newBlock.name = nameBlock;
             Pool_Block.Add(newBlock);
-        }*/
+        }
     }
     void InstantiateNewBlock()
     {
@@ -48,7 +48,6 @@ public class BlockCellPoolManager : SingletonBase<BlockCellPoolManager>
         {
             if (!Pool_Block[i].activeSelf)
             { 
-                Pool_Block[i].SetActive(true);
                 return Pool_Block[i];
             }
             else
@@ -56,7 +55,6 @@ public class BlockCellPoolManager : SingletonBase<BlockCellPoolManager>
                 if(i== Pool_Block.Count - 1)
                 {
                     InstantiateNewBlock();
-                    Pool_Block[i+1].SetActive(true);
                     return Pool_Block[i + 1];
                 }
             }

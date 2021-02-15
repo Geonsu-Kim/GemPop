@@ -26,6 +26,8 @@ public class Board
             {
                 Cell cell = mCells[i, j]?.CallCellObj(mRow,i,j,parent);
                 cell?.Move(x+j,y+i);
+                Block block = mBlocks[i, j]?.CallBlockObj(parent);
+                block?.Move(x + j, y + i);
             }
         }
     }

@@ -36,7 +36,9 @@ ProjectSettings/
 Library/
 
 build/
+Assets/StageData/
 Assets/Scenes/
+Assets/Shaders/
 Assets/Sprite/
 Assets/Sound/
 Assets/Prefab/

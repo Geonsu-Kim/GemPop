@@ -28,7 +28,7 @@ public class StageBuilder
     }
     Block SpawnBlockForStage(int row,int col)
     {
-        return new Block(BlockType.BASIC);
+        return BlockFactory.SpawnBlock(BlockType.BASIC);
     }
     Cell SpawnCellForStage(int row,int col)
     {

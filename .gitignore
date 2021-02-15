@@ -36,7 +36,7 @@ ProjectSettings/
 Library/
 
 build/
-Assets/StageData/
+Assets/Resources/
 Assets/Scenes/
 Assets/Shaders/
 Assets/Sprite/

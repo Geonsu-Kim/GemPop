@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class StageController : MonoBehaviour
 {
+    private int mStageNumber;
     private bool mInit;
     private Stage mStage;
     private StageBuilder mBuilder;
 
+    public int MStageNumber { get { return mStageNumber; } set { mStageNumber = value; } }
     void Start()
     {
         InitStage();
@@ -21,8 +23,8 @@ public class StageController : MonoBehaviour
     }
     void BuildStage()
     {
-        mBuilder = new StageBuilder(0);
-        mStage = mBuilder.BuildStage(0, 9, 9);
+        mBuilder = new StageBuilder(1);
+        mStage = mBuilder.BuildStage(1);
         mStage.ComposeStage(this.transform);
     }
 }

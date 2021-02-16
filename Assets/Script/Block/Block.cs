@@ -9,19 +9,55 @@ public enum BlockType
 }
 public enum BlockColor
 {
-    NA=-1,RED,GREEN,BLUE,CYAN,MAGENTA,YELLOW
+    NA = -1, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW
+}
+public enum BlockStatus
+{
+    NORMAL, MATCH, CLEAR
+}
+public enum MatchType
+{
+    NONE = 0,
+    THREE = 3,
+    FOUR,
+    FIVE,
+    THREETHREE,
+    THREEFOUR,
+    THREEFIVE,
+    FOURFIVE,
+    FOURFOUR
 }
 public class Block
 {
+
     protected BlockType mType; public BlockType MType { get { return mType; } set { mType = value; } }
+    protected BlockStatus mStatus; public BlockStatus MStatus { get { return mStatus; } }
     protected BlockColor mColor; public BlockColor MColor { get { return mColor; } set { mColor = value; } }
+    protected MatchType mMatch; public MatchType MMatch { get { return mMatch; } }
     protected BlockObj mObj;
     public BlockObj MObj
     {
         get { return mObj; }
         set { mObj = value; mObj.MBlock = this; }
     }
+    protected BlockActionObj mActionObj;
     protected Vector2Int mVtDuplicate;
+    public bool isMoving
+    {
+        get
+        {
+            return mObj != null && mActionObj.isMoving;
+        }
+
+    }
+    public Vector2 dropDistance
+    {
+        set
+        {
+            mActionObj?.MoveDrop(value);
+        }
+    }
+
     public int MVtDuplicateX { get { return mVtDuplicate.x; } set { mVtDuplicate.x = value; } }
     public int MVtDuplicateY { get { return mVtDuplicate.y; } set { mVtDuplicate.y = value; } }
 
@@ -29,6 +65,9 @@ public class Block
     public Block(BlockType type)
     {
         mType = type;
+        mStatus = BlockStatus.NORMAL;
+        mMatch = MatchType.NONE;
+        mColor = BlockColor.NA;
     }
     public Block CallBlockObj(Transform parent)
     {
@@ -36,6 +75,7 @@ public class Block
         GameObject newObj = BlockCellPoolManager.Instance.GetBlock();
         newObj.transform.parent = parent;
         MObj = newObj.GetComponent<BlockObj>();
+        mActionObj = newObj.GetComponent<BlockActionObj>();
         newObj.SetActive(true);
         return this;
     }
@@ -61,7 +101,32 @@ public class Block
     }
     public void MoveTo(Vector3 targetPos, float duration)
     {
-        mObj.StartCoroutine(Action2D.MoveTo(mObj, targetPos, duration));
+        mObj.StartCoroutine(Action2D.MoveTo(mObj.transform, targetPos, duration));
+    }
+
+    public void DoEvaluation(int i, int j)
+    {
+        if (mStatus == BlockStatus.CLEAR || mType == BlockType.EMPTY) return;
+        else if (mStatus == BlockStatus.MATCH)
+        {
+            mStatus = BlockStatus.CLEAR;
+            return;
+        }
+        else
+        {
+            mStatus = BlockStatus.NORMAL;
+            mMatch = MatchType.NONE;
+            return;
+        }
+    }
+
+    public void UpdateMatchType(MatchType type)
+    {
+        mStatus = BlockStatus.MATCH;
+        if (mMatch == MatchType.FOUR && type == MatchType.FOUR)
+            mMatch = MatchType.FOURFOUR;
+        else
+            mMatch = (MatchType)((int)mMatch + (int)type);
     }
 }
 

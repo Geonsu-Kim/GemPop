@@ -8,6 +8,8 @@ public class Stage
     private int mRow;  public int MRow { get { return mRow; } }
     private int mCol;  public int MCol { get { return MCol; } }
     private Board mBoard; public Board MBoard { get { return mBoard; } }
+    private List<Block> movingBlocks = new List<Block>();
+    private List<KeyValuePair<int, int>> unfilledBlocks = new List<KeyValuePair<int, int>>();
     public Block[,] MBlocks { get { return mBoard.MBlocks; } }
     public Cell[,] MCells { get { return mBoard.MCells; } }
 
@@ -84,6 +86,38 @@ public class Stage
 
             }
         }
+    }
+
+    public IEnumerator PostprocessAfterEvaluate()
+    {
+        unfilledBlocks.Clear();
+        movingBlocks.Clear();
+        yield return mBoard.ArrangeBlocksAfterClear(unfilledBlocks, movingBlocks);
+        yield return WaitForDropping(movingBlocks);
+
+    }
+
+    private IEnumerator WaitForDropping(List<Block> movingBlocks)
+    {
+        bool bContinue = false;
+        do
+        {
+            bContinue = false;
+            for (int i = 0; i < movingBlocks.Count; i++)
+            {
+                if (movingBlocks[i].isMoving)
+                {
+                    bContinue = true;
+                    break;
+                }
+            }
+            yield return YieldInstructionCache.WaitForSeconds(0.05f);
+        } while (bContinue);
+    }
+
+    public IEnumerator Evaluate(Returnable<bool> matched)
+    {
+        yield return mBoard.Evaluate(matched);
     }
 
     public bool IsInsideBoard(Vector2 point)

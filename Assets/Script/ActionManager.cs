@@ -34,10 +34,27 @@ public class ActionManager
         if (!mRunning)
         {
             mRunning = true;
-            Returnable<bool> swiped =new Returnable<bool>(false);
+            Returnable<bool> swiped = new Returnable<bool>(false);
             yield return mStage.CoDoSwipeAction(row, col, dir, swiped);
+            if (swiped.value)
+            {
+                Returnable<bool> matched = new Returnable<bool>(false);
+                yield return EvaluateBoard(matched);
+                if (!matched.value)
+                {
+                    yield return mStage.CoDoSwipeAction(row, col, dir, swiped);
+                }
+            }
             mRunning = false;
         }
         yield break;
+    }
+    private IEnumerator EvaluateBoard(Returnable<bool> matched)
+    {
+        yield return mStage.Evaluate(matched);
+        if (matched.value)
+        {
+            yield return mStage.PostprocessAfterEvaluate();
+        }
     }
 }

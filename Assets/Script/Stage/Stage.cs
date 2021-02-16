@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,5 +18,21 @@ public class Stage
     public void ComposeStage(Transform parent)
     {
         mBoard.ComposeStage(parent);
+    }
+
+    internal bool IsOnValidBlock(Vector2 point, out Vector2 blockPos)
+    {
+        Vector2 pos = new Vector2(point.x + (mCol / 2.0f), point.y + (mRow / 2.0f));
+        int row = (int)pos.y;
+        int col = (int)pos.x;
+        blockPos = new Vector2(pos.x, pos.y);
+        return mBoard.IsSwipeable(row, col);
+    }
+
+    internal bool IsInsideBoard(Vector2 point)
+    {
+        Vector2 pos = new Vector2(point.x + (mCol / 2.0f), point.y + (mRow / 2.0f));
+        if (pos.y < 0 || pos.y > mRow || pos.x < 0 || pos.x > mCol) return false;
+        return true;
     }
 }

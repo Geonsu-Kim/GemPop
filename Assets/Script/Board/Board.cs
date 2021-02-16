@@ -33,6 +33,12 @@ public class Board
             }
         }
     }
+
+    internal bool IsSwipeable(int row, int col)
+    {
+        return mCells[row, col].MType != CellType.EMPTY;
+    }
+
     public bool CanShuffle(int row,int col)
     {
         if (mCells[row, col].MType == CellType.EMPTY) return false;

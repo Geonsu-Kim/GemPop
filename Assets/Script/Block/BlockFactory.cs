@@ -14,4 +14,19 @@ public static class BlockFactory
         }
         return block;
     }
+    public static Block RespawnBlock(Block block, BlockType type)
+    {
+        block.Respawn(type);
+        if (type == BlockType.BASIC)
+        {
+            block.MColor = (BlockColor)Random.Range(0, 6);
+        }
+        else
+        {
+            block.MColor = BlockColor.NA;
+        }
+        block.MObj.UpdateView(false);
+        return block;
+    }
+
 }

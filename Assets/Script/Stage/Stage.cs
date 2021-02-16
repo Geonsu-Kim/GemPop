@@ -13,11 +13,11 @@ public class Stage
     public Block[,] MBlocks { get { return mBoard.MBlocks; } }
     public Cell[,] MCells { get { return mBoard.MCells; } }
 
-    public Stage(int row,int col)
+    public Stage(int row,int col, StageBuilder builder)
     {
         mRow = row;
         mCol = col;
-        mBoard = new Board(mRow, mCol);
+        mBoard = new Board(mRow, mCol,builder);
     }
     public void ComposeStage(Transform parent)
     {
@@ -93,6 +93,7 @@ public class Stage
         unfilledBlocks.Clear();
         movingBlocks.Clear();
         yield return mBoard.ArrangeBlocksAfterClear(unfilledBlocks, movingBlocks);
+        yield return mBoard.SpawnBlocksAfterClear(movingBlocks);
         yield return WaitForDropping(movingBlocks);
 
     }

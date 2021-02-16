@@ -69,6 +69,13 @@ public class Block
         mMatch = MatchType.NONE;
         mColor = BlockColor.NA;
     }
+    public void Respawn(BlockType type)
+    {
+        mType = type;
+        mStatus = BlockStatus.NORMAL;
+        mMatch = MatchType.NONE;
+        mColor = BlockColor.NA;
+    }
     public Block CallBlockObj(Transform parent)
     {
         if (mType == BlockType.EMPTY) return null;

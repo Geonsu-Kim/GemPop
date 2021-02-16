@@ -9,19 +9,21 @@ public class Board
     private BoardShuffler mShuffler; public BoardShuffler MShuffler { get { return mShuffler; } }
     private Cell[,] mCells; public Cell[,] MCells { get { return mCells; } }
     private Block[,] mBlocks; public Block[,] MBlocks { get { return mBlocks; } }
+    private StageBuilder mBuilder;
 
     private List<Block> matchedBlocks = new List<Block>();
     private List<Block> clearBlocks = new List<Block>();
 
     private List<KeyValuePair<int, int>> emptyRemainBlocks = new List<KeyValuePair<int, int>>();
     private SortedList<int, int> emptyBlocks = new SortedList<int, int>();
-    
-    public Board(int row,int col)
+
+    public Board(int row, int col,StageBuilder builder)
     {
         mRow = row;
         mCol = col;
-        mCells=new Cell[row,col];
+        mCells = new Cell[row, col];
         mBlocks = new Block[row, col];
+        mBuilder = builder;
         mShuffler = new BoardShuffler(this, true);
     }
     public void ComposeStage(Transform parent)
@@ -33,8 +35,8 @@ public class Board
         {
             for (int j = 0; j < mCol; j++)
             {
-                Cell cell = mCells[i, j]?.CallCellObj(mRow,i,j,parent);
-                cell?.Move(x+j,y+i);
+                Cell cell = mCells[i, j]?.CallCellObj(mRow, i, j, parent);
+                cell?.Move(x + j, y + i);
                 Block block = mBlocks[i, j]?.CallBlockObj(parent);
                 block?.Move(x + j, y + i);
             }
@@ -46,14 +48,14 @@ public class Board
         return mCells[row, col].MType != CellType.EMPTY;
     }
 
-    public bool CanShuffle(int row,int col)
+    public bool CanShuffle(int row, int col)
     {
         if (mCells[row, col].MType == CellType.EMPTY) return false;
         return true;
     }
-    public void ChangeBlock(Block block,BlockColor prevColor)
+    public void ChangeBlock(Block block, BlockColor prevColor)
     {
-        BlockColor newColor=BlockColor.NA;
+        BlockColor newColor = BlockColor.NA;
         do
         {
             newColor = (BlockColor)Random.Range(0, 6);
@@ -67,7 +69,7 @@ public class Board
     public float SetPosY(float offset)
     {
         return -mRow / 2.0f + offset;
-        
+
     }
 
     public IEnumerator Evaluate(Returnable<bool> matched)
@@ -94,10 +96,10 @@ public class Board
                 Block block = MBlocks[i, j];
                 if (block != null)
                 {
-                    if(block.MStatus==BlockStatus.CLEAR)
+                    if (block.MStatus == BlockStatus.CLEAR)
                     {
                         clearBlocks.Add(block);
-                        mBlocks[i, j]=null;
+                        mBlocks[i, j] = null;
                     }
                 }
             }
@@ -108,6 +110,47 @@ public class Board
         }
         matched.value = true;
         yield break;
+    }
+
+    public IEnumerator SpawnBlocksAfterClear(List<Block> movingBlocks)
+    {
+        for (int j = 0; j < mCol; j++)
+        {
+            for (int i = 0; i < mRow; i++)
+            {
+                if (mBlocks[i, j] == null)
+                {
+                    int topRow = i;
+                    int spawnBaseY = 0;
+                    for (int y = topRow; y <mRow; y++)
+                    {
+                        if (mBlocks[y, j] != null || !CanBlockBeAllocatable(y, j)) continue;
+                        Block block = SpawnBlockWithDrop(y, j, spawnBaseY, j);
+                        if (block != null)
+                            movingBlocks.Add(block);
+                        spawnBaseY++;
+                    }
+                    break;
+                }
+            }
+        }
+        yield return null;
+    }
+
+    private Block SpawnBlockWithDrop(int row, int col, int spawnRow, int spawnCol)
+    {
+        float x = SetPosX(0.5f);
+        float y = SetPosY(0.5f)+mRow;
+        GameObject blockObj = BlockCellPoolManager.Instance.GetBlock();
+        Block block = BlockFactory.RespawnBlock(blockObj.GetComponent<BlockObj>().MBlock,BlockType.BASIC);
+        if (block != null)
+        {
+            mBlocks[row, col] = block;
+            block.Move(x + (float)spawnCol, y + (float)spawnRow);
+            blockObj.SetActive(true);
+            block.dropDistance = new Vector2(spawnCol - col, mRow + (spawnRow - row));
+        }
+        return block;
     }
 
     public IEnumerator ArrangeBlocksAfterClear(List<KeyValuePair<int, int>> unfilledBlocks, List<Block> movingBlocks)
@@ -124,7 +167,7 @@ public class Board
             if (emptyBlocks.Count == 0)
                 continue;
             int firstValue = emptyBlocks.Values[0];
-            for (int i = firstValue+1; i < mRow; i++)
+            for (int i = firstValue + 1; i < mRow; i++)
             {
                 Block block = mBlocks[i, j];
                 if (block == null || mCells[i, j].MType == CellType.EMPTY) continue;
@@ -139,7 +182,7 @@ public class Board
             }
         }
         yield return null;
-        if(emptyRemainBlocks.Count>0)
+        if (emptyRemainBlocks.Count > 0)
         {
             unfilledBlocks.AddRange(emptyRemainBlocks);
         }
@@ -178,12 +221,12 @@ public class Board
         if (block.MMatch != MatchType.NONE || block.MType == BlockType.EMPTY || mCells[row, col].MType == CellType.EMPTY)
             return false;
         matchedBlocks.Add(block);
-        for (int i = col+1; i < mCol; i++)
+        for (int i = col + 1; i < mCol; i++)
         {
             if (mBlocks[row, i] == null || !mBlocks[row, i].IsEqual(block)) break;
             matchedBlocks.Add(mBlocks[row, i]);
         }
-        for (int i = col -1; i >=0; i--)
+        for (int i = col - 1; i >= 0; i--)
         {
             if (mBlocks[row, i] == null || !mBlocks[row, i].IsEqual(block)) break;
             matchedBlocks.Add(mBlocks[row, i]);

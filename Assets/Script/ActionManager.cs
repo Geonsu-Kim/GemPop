@@ -51,10 +51,18 @@ public class ActionManager
     }
     private IEnumerator EvaluateBoard(Returnable<bool> matched)
     {
-        yield return mStage.Evaluate(matched);
-        if (matched.value)
+        while (true)
         {
-            yield return mStage.PostprocessAfterEvaluate();
+            Returnable<bool> checkAgain = new Returnable<bool>(false);
+            yield return mStage.Evaluate(checkAgain);
+            if (checkAgain.value)
+            {
+                matched.value = true;
+                yield return mStage.PostprocessAfterEvaluate();
+            }
+            else
+                break;
         }
+        yield break;
     }
 }

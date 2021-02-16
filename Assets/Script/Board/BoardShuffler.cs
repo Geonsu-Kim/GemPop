@@ -148,13 +148,13 @@ public class BoardShuffler
         if (col < mBoard.MCol - 1 && mBoard.MBlocks[row, col + 1] != null && mBoard.MBlocks[row, col + 1].IsEqual(block))
         {
             colDup += mBoard.MBlocks[row, col + 1].MVtDuplicateX;
-            if (mBoard.MBlocks[row, col + 1].MVtDuplicateX == 2)
+            if (mBoard.MBlocks[row, col + 1].MVtDuplicateX == 1)
                 mBoard.MBlocks[row, col + 1].MVtDuplicateX = 2;
         }
         if (row < mBoard.MRow - 1 && mBoard.MBlocks[row + 1, col] != null && mBoard.MBlocks[row + 1, col].IsEqual(block))
         {
             rowDup += mBoard.MBlocks[row + 1, col].MVtDuplicateY;
-            if (mBoard.MBlocks[row + 1, col].MVtDuplicateY == 2)
+            if (mBoard.MBlocks[row + 1, col].MVtDuplicateY == 1)
                 mBoard.MBlocks[row + 1, col].MVtDuplicateY = 2;
         }
         return new Vector2Int(colDup, rowDup);

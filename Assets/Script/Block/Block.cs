@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +53,15 @@ public class Block
     {
         if (mColor == target.MColor) return true;
         return false;
+    }
+
+    public bool IsSwipeable(Block baseBlock)
+    {
+        return true;
+    }
+    public void MoveTo(Vector3 targetPos, float duration)
+    {
+        mObj.StartCoroutine(Action2D.MoveTo(mObj, targetPos, duration));
     }
 }
 

@@ -34,7 +34,7 @@ public class Board
         }
     }
 
-    internal bool IsSwipeable(int row, int col)
+    public bool IsSwipeable(int row, int col)
     {
         return mCells[row, col].MType != CellType.EMPTY;
     }

@@ -14,7 +14,7 @@ public static class TouchEvaluator
     }
     static float EvalDragAnle(Vector2 start,Vector2 end)
     {
-        Vector2 dragDir = end = start;
+        Vector2 dragDir = end - start;
         if (dragDir.magnitude <= 0.2f) return -1f;
         float aimAngle = Mathf.Atan2(dragDir.y, dragDir.x);
         if (aimAngle < 0f)

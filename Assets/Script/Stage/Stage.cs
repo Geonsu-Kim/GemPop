@@ -69,7 +69,7 @@ public class Stage
                 swipedRow--;
                 break;
         }
-        if (mBoard.IsSwipeable(row, col))
+        if (mBoard.IsSwipeable(row, col)&& mBoard.IsSwipeable(swipedRow, swipedCol))
         {
             Block targetBlock = MBlocks[swipedRow, swipedCol];
             Block baseBlock = MBlocks[row, col];

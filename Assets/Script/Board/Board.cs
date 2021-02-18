@@ -13,6 +13,7 @@ public class Board
 
     private List<Block> matchedBlocks = new List<Block>();
     private List<Block> clearBlocks = new List<Block>();
+    private List<KeyValuePair<int, int>> border = new List<KeyValuePair<int, int>>();
 
     private List<KeyValuePair<int, int>> emptyRemainBlocks = new List<KeyValuePair<int, int>>();
     private SortedList<int, int> emptyBlocks = new SortedList<int, int>();
@@ -116,31 +117,54 @@ public class Board
     {
         for (int j = 0; j < mCol; j++)
         {
+            border.Clear();
+            int floor = 0;
+            int ceiling = mRow;
             for (int i = 0; i < mRow; i++)
             {
-                if (mBlocks[i, j] == null)
+                if (mCells[i, j].MType == CellType.EMPTY)
                 {
-                    int topRow = i;
-                    int spawnBaseY = 0;
-                    for (int y = topRow; y <mRow; y++)
+                    ceiling = i+1;
+                    border.Add(new KeyValuePair<int, int>(floor, ceiling));
+                    do
                     {
-                        if (mBlocks[y, j] != null || !CanBlockBeAllocatable(y, j)) continue;
-                        Block block = SpawnBlockWithDrop(y, j, spawnBaseY, j);
-                        if (block != null)
-                            movingBlocks.Add(block);
-                        spawnBaseY++;
-                    }
-                    break;
+                        i++;
+                    } while (i<mRow&&mCells[i, j].MType == CellType.EMPTY);
+                    floor = i;
                 }
             }
+
+            border.Add(new KeyValuePair<int, int>(floor, mRow));
+
+            for (int idx = 0; idx < border.Count; idx++)
+            {
+                for (int i = border[idx].Key; i < border[idx].Value; i++)
+                {
+                    if (mBlocks[i, j] == null)
+                    {
+                        int topRow = i;
+                        int spawnBaseY = border[idx].Key;
+                        for (int y = topRow; y < border[idx].Value; y++)
+                        {
+                            if (mBlocks[y, j] != null || !CanBlockBeAllocatable(y, j)) continue;
+                            Block block = SpawnBlockWithDrop(y, j, spawnBaseY, j, ceiling);
+                            if (block != null)
+                                movingBlocks.Add(block);
+                            spawnBaseY++;
+                        }
+                        break;
+                    }
+                }
+            }
+           
         }
         yield return null;
     }
 
-    private Block SpawnBlockWithDrop(int row, int col, int spawnRow, int spawnCol)
+    private Block SpawnBlockWithDrop(int row, int col, int spawnRow, int spawnCol, int ceiling)
     {
         float x = SetPosX(0.5f);
-        float y = SetPosY(0.5f)+mRow;
+        float y = SetPosY(0.5f)+ ceiling;
         GameObject blockObj = BlockCellPoolManager.Instance.GetBlock();
         Block block = BlockFactory.RespawnBlock(blockObj.GetComponent<BlockObj>().MBlock,BlockType.BASIC);
         if (block != null)
@@ -148,7 +172,7 @@ public class Board
             mBlocks[row, col] = block;
             block.Move(x + (float)spawnCol, y + (float)spawnRow);
             blockObj.SetActive(true);
-            block.dropDistance = new Vector2(spawnCol - col, mRow + (spawnRow - row));
+            block.dropDistance = new Vector2(spawnCol - col, ceiling + (spawnRow - row));
         }
         return block;
     }
@@ -169,6 +193,7 @@ public class Board
             int firstValue = emptyBlocks.Values[0];
             for (int i = firstValue + 1; i < mRow; i++)
             {
+                if (mCells[i, j].MType == CellType.EMPTY) break;
                 Block block = mBlocks[i, j];
                 if (block == null || mCells[i, j].MType == CellType.EMPTY) continue;
                 block.dropDistance = new Vector2(0, i - firstValue);

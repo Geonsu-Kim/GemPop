@@ -23,6 +23,7 @@ public class ActionManager
     }
     public void DoSwipeAction(int row, int col, Swipe dir)
     {
+
         if (mStage.IsValidSwipe(row, col, dir))
         {
             StartCoroutine(CoDoSwipeAction(row, col, dir));

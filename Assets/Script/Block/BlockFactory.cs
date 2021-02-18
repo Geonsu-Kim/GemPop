@@ -17,7 +17,14 @@ public static class BlockFactory
     public static Block RespawnBlock(Block block, BlockType type)
     {
         block.Respawn(type);
-        if (type == BlockType.BASIC)
+        int rand = Random.Range(0, 100);
+        if (rand > 70)
+        {
+            block.MType = (BlockType)Random.Range(2, 4);
+        }
+        else
+            block.MType = BlockType.BASIC;
+        if (type != BlockType.EMPTY)
         {
             block.MColor = (BlockColor)Random.Range(0, 6);
         }

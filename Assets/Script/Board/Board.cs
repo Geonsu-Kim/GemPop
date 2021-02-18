@@ -18,7 +18,7 @@ public class Board
     private List<KeyValuePair<int, int>> emptyRemainBlocks = new List<KeyValuePair<int, int>>();
     private SortedList<int, int> emptyBlocks = new SortedList<int, int>();
 
-    public Board(int row, int col,StageBuilder builder)
+    public Board(int row, int col, StageBuilder builder)
     {
         mRow = row;
         mCol = col;
@@ -85,8 +85,7 @@ public class Board
         {
             for (int j = 0; j < mCol; j++)
             {
-                Block block = MBlocks[i, j];
-                block?.DoEvaluation(i, j);
+                mBlocks[i, j]?.DoEvaluation(i, j);
             }
         }
         clearBlocks.Clear();
@@ -94,14 +93,11 @@ public class Board
         {
             for (int j = 0; j < mCol; j++)
             {
-                Block block = MBlocks[i, j];
-                if (block != null)
+                if (mBlocks[i, j] != null)
                 {
-                    if (block.MStatus == BlockStatus.CLEAR)
-                    {
-                        clearBlocks.Add(block);
-                        mBlocks[i, j] = null;
-                    }
+                 
+                        CheckBlockType(mBlocks[i, j].MType,i,j);
+                    
                 }
             }
         }
@@ -112,7 +108,7 @@ public class Board
         matched.value = true;
         yield break;
     }
-
+    
     public IEnumerator SpawnBlocksAfterClear(List<Block> movingBlocks)
     {
         for (int j = 0; j < mCol; j++)
@@ -124,12 +120,12 @@ public class Board
             {
                 if (mCells[i, j].MType == CellType.EMPTY)
                 {
-                    ceiling = i+1;
+                    ceiling = i + 1;
                     border.Add(new KeyValuePair<int, int>(floor, ceiling));
                     do
                     {
                         i++;
-                    } while (i<mRow&&mCells[i, j].MType == CellType.EMPTY);
+                    } while (i < mRow && mCells[i, j].MType == CellType.EMPTY);
                     floor = i;
                 }
             }
@@ -156,7 +152,7 @@ public class Board
                     }
                 }
             }
-           
+
         }
         yield return null;
     }
@@ -164,9 +160,9 @@ public class Board
     private Block SpawnBlockWithDrop(int row, int col, int spawnRow, int spawnCol, int ceiling)
     {
         float x = SetPosX(0.5f);
-        float y = SetPosY(0.5f)+ ceiling;
+        float y = SetPosY(0.5f) + ceiling;
         GameObject blockObj = BlockCellPoolManager.Instance.GetBlock();
-        Block block = BlockFactory.RespawnBlock(blockObj.GetComponent<BlockObj>().MBlock,BlockType.BASIC);
+        Block block = BlockFactory.RespawnBlock(blockObj.GetComponent<BlockObj>().MBlock, BlockType.BASIC);
         if (block != null)
         {
             mBlocks[row, col] = block;
@@ -288,5 +284,66 @@ public class Board
         matchedBlocks.Clear();
         return found;
     }
+    public void CheckBlockType(BlockType type, int row, int col)
+    {
+        if (mBlocks[row, col]==null||mBlocks[row, col].MStatus != BlockStatus.CLEAR) return;
+        Block block;
+        block = mBlocks[row, col];
+        switch (type)
+        {
+            case BlockType.BASIC:
+                if (block == null||clearBlocks.Contains(block)) break;
+                clearBlocks.Add(block);
+                mBlocks[row, col] = null;
+                break;
+            case BlockType.VERTICAL:
+                for (int i = 0; i < mRow; i++)
+                {
+                    block = mBlocks[i, col];
+                    if (block == null || clearBlocks.Contains(block)  ||  mCells[i, col].MType == CellType.EMPTY) continue;
+                  
+                    clearBlocks.Add(block);
+                    mBlocks[i, col] = null;
+                    CheckBlockType(block.MType, i, col);
+                }
+                break;
+            case BlockType.HORIZON:
+                for (int i = 0; i < mCol; i++)
+                {
+                    block = mBlocks[row, i];
+                    if (block == null||clearBlocks.Contains(block) || mCells[row, i].MType == CellType.EMPTY) continue;
+                    
+                    clearBlocks.Add(block);
+                    mBlocks[row, i] = null;
+                    CheckBlockType(block.MType, row, i);
 
+                }
+                break;/*
+            case BlockType.SQUARE:
+                for (int i = row - 1; i <= row + 1; i++)
+                {
+                    for (int j = col - 1; j <= col + 1; j++)
+                    {
+                        if (i < 0 || i >= mRow || j < 0 || j > mCol || clearBlocks.Contains(mBlocks[row, i])||mBlocks[i,j]==null||mCells[i,j].MType==CellType.EMPTY) continue;
+
+                        clearBlocks.Add(mBlocks[i, j]);
+                        mBlocks[i, j] = null;
+                    }
+                }
+                break;
+            case BlockType.SAMECOLOR:
+                for (int i = 0; i < mRow; i++)
+                {
+                    for (int j = 0; j < mCol; j++)
+                    {
+                        if (clearBlocks.Contains(mBlocks[i, j]) || mBlocks[i, j] == null || !mBlocks[i, j].IsEqual(mBlocks[row, col])|| mCells[i, j].MType == CellType.EMPTY) continue;
+                        
+                            clearBlocks.Add(mBlocks[i, j]);
+                        mBlocks[i, j] = null;
+
+                    }
+                }
+                break;*/
+        }
+    }
 }

@@ -6,6 +6,10 @@ public enum BlockType
 {
     EMPTY = 0,
     BASIC,
+    VERTICAL,
+    HORIZON/*,
+    SQUARE,
+    SAMECOLOR*/
 }
 public enum BlockColor
 {

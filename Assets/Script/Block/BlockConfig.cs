@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="BlockConfig",menuName = "Block/BlockConfig")]
 public class BlockConfig : ScriptableObject
 {
-    public Sprite[] blockSprites;
+    public Sprite[] basicBlockSprites;
+    public Sprite[] itemBlockSprites;
     public Material[] blockMaterials;
 }

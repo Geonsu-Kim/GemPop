@@ -21,12 +21,17 @@ public class BlockObj : MonoBehaviour
         {
             mSprite.sprite = null;
             mSprite.material = null;
+            return;
         }
         else if(mBlock.MType == BlockType.BASIC)
         {
-
-            mSprite.sprite = mConfig.blockSprites[(int)mBlock.MColor];
-            mSprite.material = mConfig.blockMaterials[(int)mBlock.MColor];
+            mSprite.sprite = mConfig.basicBlockSprites[(int)mBlock.MColor];
         }
+        else
+        {
+            mSprite.sprite = mConfig.itemBlockSprites[(int)mBlock.MType - 2];
+        }
+
+        mSprite.material = mConfig.blockMaterials[(int)mBlock.MColor];
     }
 }

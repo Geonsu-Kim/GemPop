@@ -96,7 +96,7 @@ public class Board
                 if (mBlocks[i, j] != null)
                 {
                  
-                        CheckBlockType(mBlocks[i, j].MType,i,j);
+                        CheckBlockType(mBlocks[i, j].MType, mBlocks[i, j].MStatus, i,j);
                     
                 }
             }
@@ -284,14 +284,14 @@ public class Board
         matchedBlocks.Clear();
         return found;
     }
-    public void CheckBlockType(BlockType type, int row, int col)
+    public void CheckBlockType(BlockType type, BlockStatus status, int row, int col)
     {
-        if (mBlocks[row, col]==null||mBlocks[row, col].MStatus != BlockStatus.CLEAR) return;
+        if (status != BlockStatus.CLEAR) return;
         Block block;
-        block = mBlocks[row, col];
         switch (type)
         {
             case BlockType.BASIC:
+                block = mBlocks[row, col];
                 if (block == null||clearBlocks.Contains(block)) break;
                 clearBlocks.Add(block);
                 mBlocks[row, col] = null;
@@ -304,7 +304,7 @@ public class Board
                   
                     clearBlocks.Add(block);
                     mBlocks[i, col] = null;
-                    CheckBlockType(block.MType, i, col);
+                    CheckBlockType(block.MType, block.MStatus,i, col);
                 }
                 break;
             case BlockType.HORIZON:
@@ -315,7 +315,7 @@ public class Board
                     
                     clearBlocks.Add(block);
                     mBlocks[row, i] = null;
-                    CheckBlockType(block.MType, row, i);
+                    CheckBlockType(block.MType, block.MStatus, row, i);
 
                 }
                 break;/*

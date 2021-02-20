@@ -9,11 +9,8 @@ public class CameraResolution : MonoBehaviour
     void Awake()
     {
         mCam = GetComponent<Camera>();
-    }
-
-    void Start()
-    {
         if (mboardUnit == 0) mboardUnit = 10;
         mCam.orthographicSize = mboardUnit / mCam.aspect;
     }
+
 }

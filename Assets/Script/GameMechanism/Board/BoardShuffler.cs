@@ -19,7 +19,10 @@ public class BoardShuffler
     {
         PrepareDuplicationData();
         PrepareShuffleBlocks();
+
         RunShuffle(animation);
+        mOrgBlocks.Clear();
+        mUnusedBlock.Clear();
     }
     void PrepareDuplicationData()
     {
@@ -34,12 +37,12 @@ public class BoardShuffler
                 {
                     block.MVtDuplicateX = 1;
                     block.MVtDuplicateY = 1;
-                    if (j > 0 && !mBoard.CanShuffle(i, j - 1) && mBoard.MBlocks[i, j - 1] != null && mBoard.MBlocks[i, j - 1].IsEqual(block))
+                    if (j > 1 && !mBoard.CanShuffle(i, j - 1) && mBoard.MBlocks[i, j - 1] != null && mBoard.MBlocks[i, j - 1].IsEqual(block))
                     {
                         block.MVtDuplicateX = 2;
                         mBoard.MBlocks[i, j - 1].MVtDuplicateX = 2;
                     }
-                    if (i > 0 && !mBoard.CanShuffle(i - 1, j) && mBoard.MBlocks[i - 1, j] != null && mBoard.MBlocks[i - 1, j].IsEqual(block))
+                    if (i > 1 && !mBoard.CanShuffle(i - 1, j) && mBoard.MBlocks[i - 1, j] != null && mBoard.MBlocks[i - 1, j].IsEqual(block))
                     {
                         block.MVtDuplicateY = 2;
                         mBoard.MBlocks[i - 1, j].MVtDuplicateY = 2;

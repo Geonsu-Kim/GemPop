@@ -5,6 +5,8 @@ public class StageInfo
 {
     public int mRow;
     public int mCol;
+    public int mMoveCnt;
+    public int mScore;
     public int[] cells;
     public CellType GetCellType(int row,int col)
     {

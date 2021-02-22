@@ -8,16 +8,19 @@ public class Stage
     private int mRow;  public int MRow { get { return mRow; } }
     private int mCol;  public int MCol { get { return MCol; } }
     private Board mBoard; public Board MBoard { get { return mBoard; } }
+    private ScoreInfo mInfo; public ScoreInfo MInfo { get { return mInfo; } }
     private List<Block> movingBlocks = new List<Block>();
     private List<KeyValuePair<int, int>> unfilledBlocks = new List<KeyValuePair<int, int>>();
+    private Returnable<int> returnScore=new Returnable<int>(0);
     public Block[,] MBlocks { get { return mBoard.MBlocks; } }
     public Cell[,] MCells { get { return mBoard.MCells; } }
 
-    public Stage(int row,int col, StageBuilder builder)
+    public Stage(int row,int col, StageBuilder builder,int score,int moveCnt)
     {
         mRow = row;
         mCol = col;
         mBoard = new Board(mRow, mCol,builder);
+        mInfo = new ScoreInfo(moveCnt, score);
     }
     public void ComposeStage(Transform parent)
     {
@@ -120,7 +123,9 @@ public class Stage
 
     public IEnumerator Evaluate(Returnable<bool> matched)
     {
-        yield return mBoard.Evaluate(matched);
+        returnScore.value = 0;
+        yield return mBoard.Evaluate(matched,returnScore);
+        mInfo.GetScore(returnScore.value);
     }
     public IEnumerator CheckDeadlock(Returnable<bool> deadlock)
     {

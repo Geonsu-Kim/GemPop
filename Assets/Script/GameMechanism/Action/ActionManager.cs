@@ -12,7 +12,7 @@ public class ActionManager
 
     Returnable<bool> swiped = new Returnable<bool>(false);
 
-    Returnable<bool> matchable = new Returnable<bool>(false);
+    Returnable<bool> nextMatchable = new Returnable<bool>(false);
 
     Returnable<bool> matched = new Returnable<bool>(false);
     Returnable<bool> checkAgain = new Returnable<bool>(true);
@@ -53,9 +53,10 @@ public class ActionManager
                 }
                 else
                 {
-                    matchable.value = false;
-                    yield return mStage.CheckDeadlock(matchable);
-                    if (!matchable.value)
+                    nextMatchable.value = false;
+                    mStage.MInfo.SubMoveCnt();
+                    yield return mStage.CheckDeadlock(nextMatchable);
+                    if (!nextMatchable.value)
                     {
                         mStage.ResetDeadlock(mParent);
                     }

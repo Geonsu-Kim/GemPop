@@ -103,7 +103,7 @@ public class Board
 
     }
 
-    public IEnumerator Evaluate(Returnable<bool> matched)
+    public IEnumerator Evaluate(Returnable<bool> matched,Returnable<int> returnScore)
     {
         bool matchedBlockFound = UpdateAllBlocksMatchedStatus();
         if (!matchedBlockFound)
@@ -126,7 +126,7 @@ public class Board
                 if (mBlocks[i, j] != null)
                 {
 
-                    CheckBlockType(mBlocks[i, j].MType, mBlocks[i, j].MStatus, i, j);
+                    CheckBlockType(mBlocks[i, j].MType, mBlocks[i, j].MStatus, i, j, returnScore);
 
                 }
             }
@@ -315,9 +315,10 @@ public class Board
         matchedBlocks.Clear();
         return found;
     }
-    public void CheckBlockType(BlockType type, BlockStatus status, int row, int col)
+    public void CheckBlockType(BlockType type, BlockStatus status, int row, int col,Returnable<int>returnScore)
     {
         if (status != BlockStatus.CLEAR) return;
+        returnScore.value += 100;
         Block block;
         switch (type)
         {
@@ -328,6 +329,7 @@ public class Board
                 mBlocks[row, col] = null;
                 break;
             case BlockType.VERTICAL:
+                returnScore.value += 200;
                 for (int i = 0; i < mRow; i++)
                 {
                     block = mBlocks[i, col];
@@ -335,10 +337,11 @@ public class Board
 
                     clearBlocks.Add(block);
                     mBlocks[i, col] = null;
-                    CheckBlockType(block.MType, block.MStatus, i, col);
+                    CheckBlockType(block.MType, block.MStatus, i, col, returnScore);
                 }
                 break;
             case BlockType.HORIZON:
+                returnScore.value += 200;
                 for (int i = 0; i < mCol; i++)
                 {
                     block = mBlocks[row, i];
@@ -346,7 +349,7 @@ public class Board
 
                     clearBlocks.Add(block);
                     mBlocks[row, i] = null;
-                    CheckBlockType(block.MType, block.MStatus, row, i);
+                    CheckBlockType(block.MType, block.MStatus, row, i, returnScore);
 
                 }
                 break;/*

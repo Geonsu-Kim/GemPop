@@ -13,7 +13,7 @@ public class StageBuilder
     public Stage ComposeStage()
     {
         mInfo = LoadStage(mStageNumber);
-        Stage stage = new Stage(mInfo.mRow, mInfo.mCol,this);
+        Stage stage = new Stage(mInfo.mRow, mInfo.mCol,this, mInfo.mScore, mInfo.mMoveCnt);
         for (int i = 0; i < mInfo.mRow; i++)
         {
             for (int j = 0; j < mInfo.mCol; j++)

@@ -141,5 +141,12 @@ public class Block
         else
             mMatch = (MatchType)((int)mMatch + (int)type);
     }
+    public void PopAction()
+    {
+        if (mStatus == BlockStatus.CLEAR)
+        {
+            mActionObj.PopAction();
+        }
+    }
 }
 

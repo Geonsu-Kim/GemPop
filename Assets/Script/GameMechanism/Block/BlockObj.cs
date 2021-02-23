@@ -23,11 +23,7 @@ public class BlockObj : MonoBehaviour
             mSprite.material = null;
             return;
         }
-        else if(mBlock.MType == BlockType.BASIC)
-        {
-            mSprite.sprite = mConfig.basicBlockSprites[(int)mBlock.MColor];
-        }
-        else
+        else if(mBlock.MType == BlockType.HORIZON|| mBlock.MType == BlockType.VERTICAL)
         {
             mSprite.sprite = mConfig.itemBlockSprites[(int)mBlock.MType - 2];
         }

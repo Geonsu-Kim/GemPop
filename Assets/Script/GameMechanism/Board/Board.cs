@@ -133,6 +133,20 @@ public class Board
         }
         for (int i = 0; i < clearBlocks.Count; i++)
         {
+
+            clearBlocks[i].PopAction();
+        }
+        yield return YieldInstructionCache.WaitForSeconds(0.5f);
+        for (int i = 0; i < clearBlocks.Count; i++)
+        {
+            if (clearBlocks[i].MStatus == BlockStatus.CLEAR)
+            {
+                ParticlePool.Instance.GetParticle(0, clearBlocks[i].MObj.transform.position);
+            }
+            else
+            {
+                ParticlePool.Instance.GetParticle(1,clearBlocks[i].MObj.transform.position);
+            }
             clearBlocks[i].MObj.gameObject.SetActive(false);
         }
         matched.value = true;

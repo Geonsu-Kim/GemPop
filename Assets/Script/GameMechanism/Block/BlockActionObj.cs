@@ -4,7 +4,16 @@ using UnityEngine;
 public class BlockActionObj:MonoBehaviour
 {
     private Queue<Vector3> mMovementQueue = new Queue<Vector3>();
+    private Animator animator;
     public bool isMoving { get; set; }
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+    public void PopAction()
+    {
+        animator.SetTrigger("Pop");
+    }
     public void MoveDrop(Vector2 dropDistance)
     {
         mMovementQueue.Enqueue(new Vector3(dropDistance.x, dropDistance.y, 1));

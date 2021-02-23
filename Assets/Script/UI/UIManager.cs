@@ -22,4 +22,18 @@ public class UIManager : SingletonBase<UIManager>
         Text_Score.text = string.Format("SCORE : {0:D6}",score.ToString());
         Bar_Score.fillAmount = ratio;
     }
+    public void Pause(bool p)
+    {
+        if (p)
+        {
+            PauseWindow.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+
+            PauseWindow.SetActive(false);
+            Time.timeScale = 1;
+        }
+    }
 }

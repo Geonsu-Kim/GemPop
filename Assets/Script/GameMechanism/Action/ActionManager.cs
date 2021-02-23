@@ -16,7 +16,7 @@ public class ActionManager
 
     Returnable<bool> matched = new Returnable<bool>(false);
     Returnable<bool> checkAgain = new Returnable<bool>(true);
-
+    public bool MRunning { get { return mRunning; } }
     public ActionManager(Transform parent, Stage stage)
     {
         mParent = parent;

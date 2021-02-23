@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08596f90a3f1c641a0d9c09101ea2d3, type: 3}
   m_Name: BlockConfig
   m_EditorClassIdentifier: 
-  basicBlockSprites:
-  - {fileID: 21300000, guid: d4a39e9d9c822a945a4f5c8d1352fc4a, type: 3}
+  basicBlockSprites: {fileID: 21300000, guid: e74be34d6b1bd054da7ba9a316f5adfa, type: 3}
   itemBlockSprites:
   - {fileID: 21300000, guid: 76e3443b222b69c4187b4b1aae832c8a, type: 3}
   - {fileID: 21300000, guid: 12027f9a9f99c9f4cb531523404c1bfa, type: 3}

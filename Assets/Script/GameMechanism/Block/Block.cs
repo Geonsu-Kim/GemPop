@@ -104,7 +104,7 @@ public class Block
         if (mColor == target.MColor) return true;
         return false;
     }
-    public bool IsMatchable(Block t1,Block t2)
+    public bool IsMatchable(Block t1, Block t2)
     {
         return mColor == t1.MColor && mColor == t2.MColor;
     }
@@ -147,6 +147,11 @@ public class Block
         {
             mActionObj.PopAction();
         }
+    }
+    public void NaviAction()
+    {
+        mActionObj.NaviAction();
+
     }
 }
 

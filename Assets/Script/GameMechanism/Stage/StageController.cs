@@ -18,6 +18,7 @@ public class StageController : MonoBehaviour
     void Start()
     {
         InitStage();
+        StartCoroutine(CheckIdle());
     }
     void InitStage()
     {
@@ -60,6 +61,27 @@ public class StageController : MonoBehaviour
             }
 
             mTouchDown = false;
+        }
+    }
+    IEnumerator CheckIdle()
+    {
+        float t = 0;
+        while (true)
+        {
+            yield return null;
+            if (!mTouchDown&&!mAction.MRunning)
+            {
+                t += Time.deltaTime;
+            }
+            else
+            {
+                t = 0;
+            }
+            if (t > 3f)
+            {
+                t = 0;
+                mStage.CheckMatchableNavigation();
+            }
         }
     }
 }

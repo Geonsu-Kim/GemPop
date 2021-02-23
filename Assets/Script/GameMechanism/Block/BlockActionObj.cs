@@ -14,6 +14,11 @@ public class BlockActionObj:MonoBehaviour
     {
         animator.SetTrigger("Pop");
     }
+    public void NaviAction()
+    {
+
+        animator.SetTrigger("Matchable");
+    }
     public void MoveDrop(Vector2 dropDistance)
     {
         mMovementQueue.Enqueue(new Vector3(dropDistance.x, dropDistance.y, 1));

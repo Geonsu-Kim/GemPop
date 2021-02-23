@@ -138,4 +138,16 @@ public class Stage
         if (pos.y < 0 || pos.y > mRow || pos.x < 0 || pos.x > mCol) return false;
         return true;
     }
+    public void CheckMatchableNavigation()
+    {
+        int row1, col1, row2, col2;
+        bool p = mBoard.CheckMatchableBlockNavigation(out row1, out col1, out row2, out col2);
+        if (p)
+        {
+            MBlocks[row1, col1].NaviAction();
+            MBlocks[row2, col2].NaviAction();
+
+        }
+
+    }
 }

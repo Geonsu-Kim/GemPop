@@ -414,6 +414,35 @@ public class Board
         }
         return;
     }
+    public bool CheckMatchableBlockNavigation(out int row1, out int col1, out int row2, out int col2)
+    {
+        row1 = 0; col1 = 0;row2 = 0;col2 = 0;
+        bool detected = false;
+        for (int i = 0; i < mRow; i++)
+        {
+            for (int j = 0; j < mCol; j++)
+            {
+                if (j + 1 < mCol)
+                {
+                    detected = CheckMatchableHorz(mBlocks[i, j], mBlocks[i, j + 1], i, j, i, j + 1);
+                }
+                if (detected) {
+                    row1 = i;col1 = j;row2 = i;col2 = j + 1;
+                    return true;
+                }
+                if (i + 1 < mRow)
+                {
+                    detected = detected || CheckMatchableVert(mBlocks[i, j], mBlocks[i + 1, j], i, j, i + 1, j);
+                }
+                if (detected)
+                {
+                    row1 = i;col1 = j;row2 = i+1;col2 = j;
+                return true;
+                }
+            }
+        }
+        return false;
+    }
     public bool CheckMatchableHorz(Block block1,Block block2, int row1, int col1,int row2,int col2)
     {
         return CheckMatchableRight(block1,row1,col1)|| CheckMatchableLeft(block2,row2,col2);

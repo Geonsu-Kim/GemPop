@@ -13,10 +13,6 @@ public class UIManager : SingletonBase<UIManager>
     public TextMeshProUGUI Text_Score;
     public Image Bar_Score;
     public GameObject PauseWindow;
-    public void Awake()
-    {
-        RectGrayBG.sizeDelta = new Vector2(canvas.rect.width, canvas.rect.height);
-    }
     public void RenewMoveCnt(int moveCnt)
     {
         Text_MoveCnt.text = string.Format("MOVE\n{0:D2}", moveCnt.ToString());

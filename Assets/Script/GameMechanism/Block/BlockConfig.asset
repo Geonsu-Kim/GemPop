@@ -13,14 +13,9 @@ MonoBehaviour:
   m_Name: BlockConfig
   m_EditorClassIdentifier: 
   basicBlockSprites:
-  - {fileID: 21300000, guid: f3a14fe8cbd3af142bfa5cf1b7c2a757, type: 3}
-  - {fileID: 21300000, guid: 76e3443b222b69c4187b4b1aae832c8a, type: 3}
   - {fileID: 21300000, guid: d4a39e9d9c822a945a4f5c8d1352fc4a, type: 3}
-  - {fileID: 21300000, guid: c0a8c85521973d24cb3df2bb3cd3d052, type: 3}
-  - {fileID: 21300000, guid: 1307f231d1d82a242ace3914cda3f7c2, type: 3}
-  - {fileID: 21300000, guid: 4b2236cd8ad61b7458514675aa14a907, type: 3}
   itemBlockSprites:
-  - {fileID: 21300000, guid: a6c8576058932b347ade020988109f00, type: 3}
+  - {fileID: 21300000, guid: 76e3443b222b69c4187b4b1aae832c8a, type: 3}
   - {fileID: 21300000, guid: 12027f9a9f99c9f4cb531523404c1bfa, type: 3}
   blockMaterials:
   - {fileID: 2100000, guid: b5cbfeb4de3343d4cab204dd57854a20, type: 2}

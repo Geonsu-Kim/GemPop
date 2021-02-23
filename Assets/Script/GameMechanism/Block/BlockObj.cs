@@ -17,17 +17,22 @@ public class BlockObj : MonoBehaviour
     }
     public void UpdateView(bool pValueChanged)
     {
-        if (mBlock.MType == BlockType.EMPTY)
+        switch (MBlock.MType)
         {
-            mSprite.sprite = null;
-            mSprite.material = null;
-            return;
-        }
-        else if(mBlock.MType == BlockType.HORIZON|| mBlock.MType == BlockType.VERTICAL)
-        {
-            mSprite.sprite = mConfig.itemBlockSprites[(int)mBlock.MType - 2];
-        }
+            case BlockType.EMPTY:
+                mSprite.sprite = null;
+                mSprite.material = null;
+                return;
+            case BlockType.BASIC:
+                mSprite.sprite = mConfig.basicBlockSprites;
 
+                break;
+            case BlockType.VERTICAL:
+            case BlockType.HORIZON:
+                mSprite.sprite = mConfig.itemBlockSprites[(int)mBlock.MType - 2];
+                break;
+        }
         mSprite.material = mConfig.blockMaterials[(int)mBlock.MColor];
+
     }
 }

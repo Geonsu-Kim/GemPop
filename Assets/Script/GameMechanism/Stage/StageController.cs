@@ -7,6 +7,7 @@ public class StageController : MonoBehaviour
     private int mStageNumber;
     private bool mInit;
     private bool mTouchDown;
+    private bool mCheckedNavi;
 
     private Vector2 startPos;
     private Vector2 blockPos;
@@ -59,7 +60,7 @@ public class StageController : MonoBehaviour
             {
                 mAction.DoSwipeAction((int)blockPos.y, (int)blockPos.x, dir);
             }
-
+            mCheckedNavi = false;
             mTouchDown = false;
         }
     }
@@ -80,7 +81,8 @@ public class StageController : MonoBehaviour
             if (t > 3f)
             {
                 t = 0;
-                mStage.CheckMatchableNavigation();
+                mStage.CheckMatchableNavigation(mCheckedNavi);
+                mCheckedNavi = true;
             }
         }
     }

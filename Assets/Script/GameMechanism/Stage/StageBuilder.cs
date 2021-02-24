@@ -26,7 +26,7 @@ public class StageBuilder
     }
     public StageInfo LoadStage(int stageNum)
     {
-        StageInfo info = StageReader.LoadStage(stageNum);
+        StageInfo info = StageReader.LoadStage(1);
 
         return info;
     }

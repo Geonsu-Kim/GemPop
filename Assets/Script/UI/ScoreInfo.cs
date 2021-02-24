@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ScoreInfo
 {
@@ -21,10 +20,7 @@ public class ScoreInfo
     {
         mCurMoveCnt--;
         UIManager.Instance.RenewMoveCnt(mCurMoveCnt);
-        if (mCurMoveCnt <= 0)
-        {
 
-        }
     }
     public void GetScore(int score)
     {
@@ -32,10 +28,26 @@ public class ScoreInfo
 
         float ratio = (float)mCurScore / (float)mScore;
         UIManager.Instance.RenewScore(mCurScore, ratio);
-        if (mCurScore >= mScore)
-        {
 
+    }
+    public void CheckGameEnd()
+    {
+        if (!(CheckScore()| CheckMoveCnt()))
+        {
+            UIManager.Instance.ResultWindowOn(false);
         }
+        else if (CheckScore())
+        {
+            UIManager.Instance.ResultWindowOn(true);
+        }
+    }
+    public bool CheckMoveCnt()
+    {
+        return mCurMoveCnt >= 1;
+    }
+    public bool CheckScore()
+    {
+        return mCurScore > mScore;
     }
 
 

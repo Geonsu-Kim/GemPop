@@ -5,14 +5,20 @@ using UnityEngine.UI;
 using TMPro;
 public class UIManager : SingletonBase<UIManager>
 {
-    public RectTransform canvas;
-    public RectTransform RectBG;
-    public RectTransform RectGrayBG;
+    private const string textClear = "Stage Clear!";
+    private const string textFail = "Stage Fail...";
+
+
+
 
     public TextMeshProUGUI Text_MoveCnt;
     public TextMeshProUGUI Text_Score;
+    public TextMeshProUGUI Text_ScoreRet;
+    public TextMeshProUGUI Text_StageClear;
     public Image Bar_Score;
-    public GameObject PauseWindow;
+    public GameObject Panel_Pause;
+    public GameObject Panel_Result;
+    public GameObject Btn_NextStage;
     public void RenewMoveCnt(int moveCnt)
     {
         Text_MoveCnt.text = string.Format("MOVE\n{0:D2}", moveCnt.ToString());
@@ -26,14 +32,30 @@ public class UIManager : SingletonBase<UIManager>
     {
         if (p)
         {
-            PauseWindow.SetActive(true);
+            Panel_Pause.SetActive(true);
             Time.timeScale = 0;
         }
         else
         {
 
-            PauseWindow.SetActive(false);
+            Panel_Pause.SetActive(false);
             Time.timeScale = 1;
         }
+    }
+    public void ResultWindowOn(bool isClear)
+    {
+        Time.timeScale = 0;
+        Panel_Result.SetActive(true);
+        if (isClear)
+        {
+            Btn_NextStage.SetActive(true);
+            Text_StageClear.text = textClear;
+        }
+        else 
+        { 
+            Btn_NextStage.SetActive(false);
+            Text_StageClear.text = textFail;
+        }
+        Text_ScoreRet.text=string.Copy(Text_Score.text);
     }
 }

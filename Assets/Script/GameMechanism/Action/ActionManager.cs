@@ -60,6 +60,7 @@ public class ActionManager
                     {
                         mStage.ResetDeadlock(mParent);
                     }
+                    mStage.CheckGameEnd();
                 }
             }
             mRunning = false;

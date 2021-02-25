@@ -12,7 +12,7 @@ public class StageBuilder
     }
     public Stage ComposeStage()
     {
-        mInfo = LoadStage(mStageNumber);
+        mInfo = LoadStage();
         Stage stage = new Stage(mInfo.mRow, mInfo.mCol,this, mInfo.mScore, mInfo.mMoveCnt);
         for (int i = 0; i < mInfo.mRow; i++)
         {
@@ -24,13 +24,13 @@ public class StageBuilder
         }
         return stage;
     }
-    public StageInfo LoadStage(int stageNum)
+    public StageInfo LoadStage()
     {
-        StageInfo info = StageReader.LoadStage(1);
+        StageInfo info = StageReader.LoadStage(mStageNumber);
 
         return info;
     }
-    public Stage BuildStage(int stageNum)
+    public Stage BuildStage()
     {
         return ComposeStage();
     }

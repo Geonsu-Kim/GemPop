@@ -6,7 +6,7 @@ public class ScoreInfo
     private int mScore;
     private int mCurMoveCnt;
     private int mCurScore;
-
+    public int MScore { get { return mScore; } }
     public ScoreInfo(int moveCnt,int score)
     {
         mScore = score;
@@ -34,10 +34,12 @@ public class ScoreInfo
     {
         if (!(CheckScore()| CheckMoveCnt()))
         {
+            SoundManager.Instance.PlaySFX("StageFail");
             UIManager.Instance.ResultWindowOn(false);
         }
         else if (CheckScore())
         {
+            SoundManager.Instance.PlaySFX("StageClear");
             UIManager.Instance.ResultWindowOn(true);
         }
     }

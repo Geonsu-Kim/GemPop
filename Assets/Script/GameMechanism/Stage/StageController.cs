@@ -31,10 +31,11 @@ public class StageController : MonoBehaviour
     }
     void BuildStage()
     {
-        mBuilder = new StageBuilder(1);
-        mStage = mBuilder.BuildStage(1);
+        mBuilder = new StageBuilder(StageInfoList.GetNumber());
+        mStage = mBuilder.BuildStage();
         mStage.ComposeStage(this.transform);
         mAction = new ActionManager(transform, mStage);
+        UIManager.Instance.SetStageTitle(StageInfoList.GetNumber());
     }
     private void Update()
     {

@@ -42,6 +42,7 @@ public class ActionManager
         {
             mRunning = true;
              swiped.value =false;
+            SoundManager.Instance.PlaySFX("BlockSwipe");
             yield return mStage.CoDoSwipeAction(row, col, dir, swiped);
             if (swiped.value)
             {

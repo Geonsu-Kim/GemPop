@@ -15,6 +15,8 @@ public class UIManager : SingletonBase<UIManager>
     public TextMeshProUGUI Text_Score;
     public TextMeshProUGUI Text_ScoreRet;
     public TextMeshProUGUI Text_StageClear;
+    public TextMeshProUGUI Text_StageTitle;
+
     public Image Bar_Score;
     public GameObject Panel_Pause;
     public GameObject Panel_Result;
@@ -57,5 +59,9 @@ public class UIManager : SingletonBase<UIManager>
             Text_StageClear.text = textFail;
         }
         Text_ScoreRet.text=string.Copy(Text_Score.text);
+    }
+    public void SetStageTitle(int num)
+    {
+        Text_StageTitle.text= string.Format("STAGE {0:D2}", num);
     }
 }

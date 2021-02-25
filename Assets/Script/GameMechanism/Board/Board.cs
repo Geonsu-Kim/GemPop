@@ -6,6 +6,7 @@ public class Board
 {
     private int mRow; public int MRow { get { return mRow; } }
     private int mCol; public int MCol { get { return mCol; } }
+    private bool existItem;
 
     private Returnable<bool> checkDeadlockAgain;
     private BoardShuffler mShuffler; public BoardShuffler MShuffler { get { return mShuffler; } }
@@ -105,6 +106,7 @@ public class Board
 
     public IEnumerator Evaluate(Returnable<bool> matched,Returnable<int> returnScore)
     {
+        existItem = false;
         bool matchedBlockFound = UpdateAllBlocksMatchedStatus();
         if (!matchedBlockFound)
         {
@@ -131,12 +133,15 @@ public class Board
                 }
             }
         }
+        if (existItem) SoundManager.Instance.PlaySFX("PopStartItem");
+        else SoundManager.Instance.PlaySFX("PopStartNormal");
         for (int i = 0; i < clearBlocks.Count; i++)
         {
-
             clearBlocks[i].PopAction();
         }
         yield return YieldInstructionCache.WaitForSeconds(0.5f);
+        if (existItem) SoundManager.Instance.PlaySFX("PopItem");
+        else SoundManager.Instance.PlaySFX("PopNormal");
         for (int i = 0; i < clearBlocks.Count; i++)
         {
             if (clearBlocks[i].MStatus == BlockStatus.CLEAR)
@@ -343,6 +348,7 @@ public class Board
                 mBlocks[row, col] = null;
                 break;
             case BlockType.VERTICAL:
+                existItem = true;
                 returnScore.value += 200;
                 for (int i = 0; i < mRow; i++)
                 {
@@ -355,6 +361,7 @@ public class Board
                 }
                 break;
             case BlockType.HORIZON:
+                existItem = true;
                 returnScore.value += 200;
                 for (int i = 0; i < mCol; i++)
                 {

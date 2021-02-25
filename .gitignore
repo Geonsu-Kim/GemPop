@@ -36,12 +36,17 @@ ProjectSettings/
 Library/
 
 build/
+Assets/Animation/
+
+Assets/Materials/
+Assets/Import/
 Assets/Resources/
 Assets/Scenes/
 Assets/Shaders/
 Assets/Sprite/
 Assets/Sound/
 Assets/Prefab/
+Assets/TextMesh Pro/
 Logs/
 UserSettings/
 .vs/

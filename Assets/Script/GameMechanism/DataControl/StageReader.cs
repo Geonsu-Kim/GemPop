@@ -1,12 +1,13 @@
 using System.IO;
 using System;
+using System.Xml;
 using UnityEngine;
 
 public static class StageReader
 {
     public static StageInfo LoadStage(int stageNumber)
     {
-            StageInfo info=null;
+        StageInfo info = null;
         if (Application.platform == RuntimePlatform.Android)
         {
             string path = Path.Combine(Application.streamingAssetsPath, GetFileName(stageNumber) + ".json");
@@ -14,7 +15,7 @@ public static class StageReader
             WWW reader = new WWW(path);
             while (!reader.isDone) { }
             string str = reader.text;
-            info=JsonUtility.FromJson<StageInfo>(str);
+            info = JsonUtility.FromJson<StageInfo>(str);
         }
         else
         {
@@ -28,4 +29,47 @@ public static class StageReader
     {
         return string.Format("{0:D2}", stageNumber);
     }
+    public static void Save()
+    {
+        XmlDocument XmlDoc = new XmlDocument();
+        XmlElement XmlEl= XmlDoc.CreateElement("StageRecord");
+        XmlDoc.AppendChild(XmlEl);
+        for (int i = 0; i < StageInfoList.recordList.Count; i++)
+        {
+            XmlElement ElementSetting = XmlDoc.CreateElement($"Stage{GetFileName(i+1)}");
+            ElementSetting.SetAttribute("BestScore", StageInfoList.recordList[i].MBestScore.ToString());
+            ElementSetting.SetAttribute("Clear", StageInfoList.recordList[i].MClear.ToString());
+            XmlEl.AppendChild(ElementSetting);
+        }
+        XmlDoc.Save(Application.persistentDataPath + "/StageRecord.xml");
+
+    }
+    public static void Load()
+    {
+        string path = Application.persistentDataPath + "/StageRecord.xml";
+        if (!System.IO.File.Exists(path))
+        {
+            Save();
+            return;
+        }
+        XmlDocument XmlDoc = new XmlDocument();
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            WWW reader = new WWW(path);
+            while (!reader.isDone) { }
+            path = reader.text;
+            XmlDoc.LoadXml(path);
+        }
+        XmlDoc.Load(path);
+        XmlElement xmlElement = XmlDoc["StageRecord"];
+        int idx = 0;
+        foreach (XmlElement node in xmlElement.ChildNodes)
+        {
+            StageInfoList.recordList[idx].MBestScore = Convert.ToInt32(node.GetAttribute("BestScore"));
+            StageInfoList.recordList[idx].MClear = Convert.ToBoolean(node.GetAttribute("Clear"));
+            Debug.Log(StageInfoList.recordList[idx].MBestScore + " " + StageInfoList.recordList[idx].MClear);
+            idx++;
+        }
+    }
+
 }

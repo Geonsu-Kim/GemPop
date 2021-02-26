@@ -42,7 +42,6 @@ public class Board
             CheckDeadlock(checkDeadlockAgain);
         } while (!checkDeadlockAgain.value);
 
-        mShuffler.Shuffle();
         for (int i = 0; i < mRow; i++)
         {
             for (int j = 0; j < mCol; j++)
@@ -409,13 +408,13 @@ public class Board
             {
                 if (j + 1 < mCol)
                 {
-                    if (mCells[i, j].MType == CellType.EMPTY || mCells[i, j + 1].MType == CellType.EMPTY) continue;
+                    if (mCells[i, j].MType == CellType.BASIC && mCells[i, j + 1].MType == CellType.BASIC)
                     matchable.value = CheckMatchableHorz(mBlocks[i, j], mBlocks[i, j + 1], i, j, i, j + 1);
                 }
                 if (matchable.value) return;
                 if (i + 1 < mRow)
                 {
-                    if (mCells[i, j].MType == CellType.EMPTY || mCells[i+1, j].MType == CellType.EMPTY) continue;
+                    if (mCells[i, j].MType == CellType.BASIC && mCells[i+1, j].MType == CellType.BASIC)
                     matchable.value = matchable.value || CheckMatchableVert(mBlocks[i, j], mBlocks[i+1, j], i, j, i+1, j);
                 }
                 if (matchable.value) return;

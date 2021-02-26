@@ -22,6 +22,7 @@ public static class StageInfoList
             InfoList.Add(info);
             recordList.Add(new StageRecord());
         }
+        StageReader.Load();
     }
 
     public static int GetNumber()
@@ -31,5 +32,13 @@ public static class StageInfoList
     public static void SetNumber(int num)
     {
         selectedNumber = num;
+    }
+    public static void RenewRecord(int score)
+    {
+        if (recordList[selectedNumber-1].MBestScore < score)
+        {
+            recordList[selectedNumber-1].MBestScore = score;
+        }
+        recordList[selectedNumber-1].MClear = true;
     }
 }

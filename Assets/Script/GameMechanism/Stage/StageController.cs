@@ -35,7 +35,7 @@ public class StageController : MonoBehaviour
         mStage = mBuilder.BuildStage();
         mStage.ComposeStage(this.transform);
         mAction = new ActionManager(transform, mStage);
-        UIManager.Instance.SetStageTitle(StageInfoList.GetNumber());
+        StageUIManager.Instance.SetStageTitle(StageInfoList.GetNumber());
     }
     private void Update()
     {

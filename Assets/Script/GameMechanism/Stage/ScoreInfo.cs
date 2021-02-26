@@ -12,14 +12,14 @@ public class ScoreInfo
         mScore = score;
         mCurMoveCnt = moveCnt;
         mCurScore = 0;
-        UIManager.Instance.RenewMoveCnt(moveCnt);
-        UIManager.Instance.RenewScore(0,0f);
+        StageUIManager.Instance.RenewMoveCnt(moveCnt);
+        StageUIManager.Instance.RenewScore(0,0f);
 
     }
     public void SubMoveCnt()
     {
         mCurMoveCnt--;
-        UIManager.Instance.RenewMoveCnt(mCurMoveCnt);
+        StageUIManager.Instance.RenewMoveCnt(mCurMoveCnt);
 
     }
     public void GetScore(int score)
@@ -27,7 +27,7 @@ public class ScoreInfo
         mCurScore += score;
 
         float ratio = (float)mCurScore / (float)mScore;
-        UIManager.Instance.RenewScore(mCurScore, ratio);
+        StageUIManager.Instance.RenewScore(mCurScore, ratio);
 
     }
     public void CheckGameEnd()
@@ -35,12 +35,14 @@ public class ScoreInfo
         if (!(CheckScore()| CheckMoveCnt()))
         {
             SoundManager.Instance.PlaySFX("StageFail");
-            UIManager.Instance.ResultWindowOn(false);
+            StageUIManager.Instance.ResultWindowOn(false);
+
         }
         else if (CheckScore())
         {
             SoundManager.Instance.PlaySFX("StageClear");
-            UIManager.Instance.ResultWindowOn(true);
+            StageInfoList.RenewRecord(mCurScore);
+            StageUIManager.Instance.ResultWindowOn(true);
         }
     }
     public bool CheckMoveCnt()

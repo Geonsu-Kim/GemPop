@@ -337,7 +337,7 @@ public class Board
     public void CheckBlockType(BlockType type, BlockStatus status, int row, int col,Returnable<int>returnScore)
     {
         if (status != BlockStatus.CLEAR) return;
-        returnScore.value += 100;
+        returnScore.value += 500;
         Block block;
         switch (type)
         {
@@ -349,7 +349,7 @@ public class Board
                 break;
             case BlockType.VERTICAL:
                 existItem = true;
-                returnScore.value += 200;
+                returnScore.value += 1000;
                 for (int i = 0; i < mRow; i++)
                 {
                     block = mBlocks[i, col];

@@ -13,8 +13,4 @@ public class StageRecord
         mBestScore = score;
         mClear = clear;
     }
-    public void Print()
-    {
-        Debug.Log(mBestScore + " " + mClear);
-    }
 }

@@ -67,7 +67,7 @@ public static class StageReader
         {
             StageInfoList.recordList[idx].MBestScore = Convert.ToInt32(node.GetAttribute("BestScore"));
             StageInfoList.recordList[idx].MClear = Convert.ToBoolean(node.GetAttribute("Clear"));
-            Debug.Log(StageInfoList.recordList[idx].MBestScore + " " + StageInfoList.recordList[idx].MClear);
+
             idx++;
         }
     }

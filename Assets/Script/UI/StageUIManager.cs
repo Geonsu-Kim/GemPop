@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class UIManager : SingletonBase<UIManager>
+public class StageUIManager : SingletonBase<StageUIManager>
 {
     private const string textClear = "Stage Clear!";
     private const string textFail = "Stage Fail...";
-
 
 
 
@@ -18,9 +17,21 @@ public class UIManager : SingletonBase<UIManager>
     public TextMeshProUGUI Text_StageTitle;
 
     public Image Bar_Score;
+    public Image BackGround;
     public GameObject Panel_Pause;
     public GameObject Panel_Result;
     public GameObject Btn_NextStage;
+
+    public BackGroundConfig config;
+    public void Start()
+    {
+        SetBackGround();
+
+    }
+    public void SetBackGround()
+    {
+        BackGround.sprite = config.sprites[StageInfoList.GetNumber()-1];
+    }
     public void RenewMoveCnt(int moveCnt)
     {
         Text_MoveCnt.text = string.Format("MOVE\n{0:D2}", moveCnt.ToString());
@@ -63,5 +74,29 @@ public class UIManager : SingletonBase<UIManager>
     public void SetStageTitle(int num)
     {
         Text_StageTitle.text= string.Format("STAGE {0:D2}", num);
+    }
+    public void OnClickToLobby()
+    {
+        StageReader.Save();
+        LoadingSceneManager.LoadScene("scLobby");
+    }
+    public void OnClickRetry()
+    {
+        StageReader.Save();
+        LoadingSceneManager.LoadScene("scStage");
+    }
+    public void OnClickToNextStage()
+    {
+
+        StageReader.Save();
+        if (StageInfoList.GetNumber() >= StageInfoList.InfoList.Count)
+        {
+            LoadingSceneManager.LoadScene("scLobby");
+        }
+        else
+        {
+            StageInfoList.SetNumber(StageInfoList.GetNumber() + 1);
+            LoadingSceneManager.LoadScene("scStage");
+        }
     }
 }

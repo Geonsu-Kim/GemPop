@@ -10,7 +10,7 @@ public static class StageReader
         StageInfo info = null;
         if (Application.platform == RuntimePlatform.Android)
         {
-            string path = Path.Combine(Application.streamingAssetsPath+"Stage/", GetFileName(stageNumber) + ".json");
+            string path = Application.streamingAssetsPath+"/Stage/"+GetFileName(stageNumber) + ".json";
             if (path == null) return null;
             WWW reader = new WWW(path);
             while (!reader.isDone) { }
@@ -59,13 +59,6 @@ public static class StageReader
             return;
         }
         XmlDocument XmlDoc = new XmlDocument();
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            WWW reader = new WWW(path);
-            while (!reader.isDone) { }
-            path = reader.text;
-            XmlDoc.LoadXml(path);
-        }
         XmlDoc.Load(path);
         XmlElement xmlElement = XmlDoc["StageRecord"];
         int idx = 0;

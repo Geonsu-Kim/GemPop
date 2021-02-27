@@ -91,6 +91,7 @@ public class Board
         {
             newColor = (BlockColor)Random.Range(0, 6);
         } while (prevColor == BlockColor.NA || prevColor == newColor);
+        block.MColor = newColor;
     }
     public float SetPosX(float offset)
     {

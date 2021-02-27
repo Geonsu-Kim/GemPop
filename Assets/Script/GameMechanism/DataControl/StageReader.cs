@@ -10,7 +10,7 @@ public static class StageReader
         StageInfo info = null;
         if (Application.platform == RuntimePlatform.Android)
         {
-            string path = Path.Combine(Application.streamingAssetsPath, GetFileName(stageNumber) + ".json");
+            string path = Path.Combine(Application.streamingAssetsPath+"Stage/", GetFileName(stageNumber) + ".json");
             if (path == null) return null;
             WWW reader = new WWW(path);
             while (!reader.isDone) { }
@@ -19,6 +19,7 @@ public static class StageReader
         }
         else
         {
+
             TextAsset textAsset = Resources.Load<TextAsset>($"Stage/{GetFileName(stageNumber)}");
             if (textAsset == null) return null;
             info = JsonUtility.FromJson<StageInfo>(textAsset.text);
@@ -34,9 +35,14 @@ public static class StageReader
         XmlDocument XmlDoc = new XmlDocument();
         XmlElement XmlEl= XmlDoc.CreateElement("StageRecord");
         XmlDoc.AppendChild(XmlEl);
-        for (int i = 0; i < StageInfoList.recordList.Count; i++)
-        {
+        for (int i = 0; i < StageInfoList.InfoList.Count; i++)
+        { 
+
             XmlElement ElementSetting = XmlDoc.CreateElement($"Stage{GetFileName(i+1)}");
+            if (ElementSetting == null)
+            {
+                StageInfoList.recordList.Add(new StageRecord());
+            }
             ElementSetting.SetAttribute("BestScore", StageInfoList.recordList[i].MBestScore.ToString());
             ElementSetting.SetAttribute("Clear", StageInfoList.recordList[i].MClear.ToString());
             XmlEl.AppendChild(ElementSetting);

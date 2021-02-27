@@ -30,7 +30,7 @@ public class StageUIManager : SingletonBase<StageUIManager>
     }
     public void SetBackGround()
     {
-        BackGround.sprite = config.sprites[StageInfoList.GetNumber()-1];
+        BackGround.sprite = config.sprites[(StageInfoList.GetNumber()-1)%config.sprites.Length];
     }
     public void RenewMoveCnt(int moveCnt)
     {

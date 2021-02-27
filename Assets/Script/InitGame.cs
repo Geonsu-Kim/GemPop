@@ -8,6 +8,7 @@ public class InitGame : MonoBehaviour
     void Start()
     {
         StageInfoList.Initialization();
+
         SceneManager.LoadScene("scLobby");
     }
 

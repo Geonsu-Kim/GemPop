@@ -61,7 +61,7 @@ public class BoardShuffler
                 if (!mBoard.CanShuffle(i, j)) continue;
                 while (true)
                 {
-                    randNum = Random.Range(0, 10000);
+                    randNum = Random.Range(0, 25);
                     if (mOrgBlocks.ContainsKey(randNum))
                         continue;
                     mOrgBlocks.Add(randNum, new BlockPosPair(mBoard.MBlocks[i, j], new Vector2Int(i, j)));
@@ -82,6 +82,7 @@ public class BoardShuffler
                 mBoard.MBlocks[i, j] = GetShuffleBlock(i, j);
             }
         }
+
     }
     Block GetShuffleBlock(int row, int col)
     {

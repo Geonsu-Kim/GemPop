@@ -18,7 +18,7 @@ public static class BlockFactory
     {
         block.Respawn(type);
         int rand = Random.Range(0, 100);
-        if (rand > 70)
+        if (rand > 85)
         {
             block.MType = (BlockType)Random.Range(2, 4);
         }

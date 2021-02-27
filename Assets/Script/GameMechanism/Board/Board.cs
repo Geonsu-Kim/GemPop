@@ -67,7 +67,12 @@ public class Board
         {
             for (int j = 0; j < mCol; j++)
             {
+                if (mCells[i, j].MType == CellType.EMPTY) continue;
                 Block block = mBlocks[i, j];
+                if (block.MObj == null)
+                {
+                    block = block.CallBlockObj(parent);
+                }
                 block.Move(x + j, y + i);
             }
         }

@@ -52,6 +52,7 @@ public static class StageReader
     }
     public static void Load()
     {
+
         string path = Application.persistentDataPath + "/StageRecord.xml";
         if (!System.IO.File.Exists(path))
         {

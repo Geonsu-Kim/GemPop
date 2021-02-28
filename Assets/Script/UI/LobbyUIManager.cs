@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GooglePlayGames;
 using TMPro;
 public class LobbyUIManager : SingletonBase<LobbyUIManager>
 {
     public GameObject stageButton;
     public Transform StageSelectMenu;
+    public TextMeshProUGUI LogText;
     public void Start()
     {
         for (int i = 0; i < StageInfoList.recordList.Count; i++)
@@ -20,5 +22,19 @@ public class LobbyUIManager : SingletonBase<LobbyUIManager>
    public void OnExitButton()
     {
         Application.Quit();
+    }
+    public void OnLogin()
+    {
+        Social.localUser.Authenticate((bool _bSuccess) =>
+        {
+            if (true == _bSuccess)
+            {
+                LogText.text = "Success!";
+            }
+            else
+            {
+                LogText.text = "Fail...";
+            }
+        });
     }
 }

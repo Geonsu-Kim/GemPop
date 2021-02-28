@@ -31,7 +31,11 @@ public class Cell
         newObj.SetActive(true);
         return this;
     }
-
+    public bool IsEmpty()
+    {
+        if (mType == CellType.BASIC) return false;
+        return true;
+    }
     public void Move(float x,float y)
     {
         mObj.transform.position = new Vector3(x,y);

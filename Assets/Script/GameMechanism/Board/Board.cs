@@ -67,7 +67,7 @@ public class Board
         {
             for (int j = 0; j < mCol; j++)
             {
-                if (mCells[i, j].MType == CellType.EMPTY) continue;
+                if (mCells[i, j].IsEmpty()) continue;
                 Block block = mBlocks[i, j];
                 if (block.MObj == null)
                 {
@@ -81,13 +81,12 @@ public class Board
 
     public bool IsSwipeable(int row, int col)
     {
-        return mCells[row, col].MType != CellType.EMPTY;
+        return !mCells[row, col].IsEmpty();
     }
 
     public bool CanShuffle(int row, int col)
     {
-        if (mCells[row, col].MType == CellType.EMPTY) return false;
-        return true;
+        return !mCells[row, col].IsEmpty();
     }
     public void ChangeBlock(Block block, BlockColor prevColor)
     {
@@ -173,14 +172,14 @@ public class Board
             int ceiling = mRow;
             for (int i = 0; i < mRow; i++)
             {
-                if (mCells[i, j].MType == CellType.EMPTY)
+                if (mCells[i, j].IsEmpty())
                 {
                     ceiling = i + 1;
                     border.Add(new KeyValuePair<int, int>(floor, ceiling));
                     do
                     {
                         i++;
-                    } while (i < mRow && mCells[i, j].MType == CellType.EMPTY);
+                    } while (i < mRow && mCells[i, j].IsEmpty());
                     floor = i;
                 }
             }
@@ -244,9 +243,9 @@ public class Board
             int firstValue = emptyBlocks.Values[0];
             for (int i = firstValue + 1; i < mRow; i++)
             {
-                if (mCells[i, j].MType == CellType.EMPTY) break;
+                if (mCells[i, j].IsEmpty()) break;
                 Block block = mBlocks[i, j];
-                if (block == null || mCells[i, j].MType == CellType.EMPTY) continue;
+                if (block == null || mCells[i, j].IsEmpty()) continue;
                 block.dropDistance = new Vector2(0, i - firstValue);
                 movingBlocks.Add(block);
                 mBlocks[firstValue, j] = block;
@@ -267,7 +266,7 @@ public class Board
 
     private bool CanBlockBeAllocatable(int row, int col)
     {
-        if (mCells[row, col].MType == CellType.EMPTY)
+        if (mCells[row, col].IsEmpty())
             return false;
         return mBlocks[row, col] == null;
     }
@@ -294,7 +293,7 @@ public class Board
         bool found = false;
         Block block = mBlocks[row, col];
         if (block == null) return false;
-        if (block.MMatch != MatchType.NONE || block.MType == BlockType.EMPTY || mCells[row, col].MType == CellType.EMPTY)
+        if (block.MMatch != MatchType.NONE || block.MType == BlockType.EMPTY || mCells[row, col].IsEmpty())
             return false;
         matchedBlocks.Add(block);
         for (int i = col + 1; i < mCol; i++)
@@ -358,7 +357,7 @@ public class Board
                 for (int i = 0; i < mRow; i++)
                 {
                     block = mBlocks[i, col];
-                    if (block == null || clearBlocks.Contains(block) || mCells[i, col].MType == CellType.EMPTY) continue;
+                    if (block == null || clearBlocks.Contains(block) || mCells[i, col].IsEmpty()) continue;
 
                     clearBlocks.Add(block);
                     mBlocks[i, col] = null;
@@ -371,7 +370,7 @@ public class Board
                 for (int i = 0; i < mCol; i++)
                 {
                     block = mBlocks[row, i];
-                    if (block == null || clearBlocks.Contains(block) || mCells[row, i].MType == CellType.EMPTY) continue;
+                    if (block == null || clearBlocks.Contains(block) || mCells[row, i].IsEmpty()) continue;
 
                     clearBlocks.Add(block);
                     mBlocks[row, i] = null;
@@ -414,13 +413,13 @@ public class Board
             {
                 if (j + 1 < mCol)
                 {
-                    if (mCells[i, j].MType == CellType.BASIC && mCells[i, j + 1].MType == CellType.BASIC)
+                    if (!mCells[i, j].IsEmpty() && !mCells[i, j + 1].IsEmpty())
                     matchable.value = CheckMatchableHorz(mBlocks[i, j], mBlocks[i, j + 1], i, j, i, j + 1);
                 }
                 if (matchable.value) return;
                 if (i + 1 < mRow)
                 {
-                    if (mCells[i, j].MType == CellType.BASIC && mCells[i+1, j].MType == CellType.BASIC)
+                    if (!mCells[i, j].IsEmpty() && !mCells[i+1, j].IsEmpty())
                     matchable.value = matchable.value || CheckMatchableVert(mBlocks[i, j], mBlocks[i+1, j], i, j, i+1, j);
                 }
                 if (matchable.value) return;
@@ -438,7 +437,7 @@ public class Board
             {
                 if (j + 1 < mCol)
                 {
-                    if (mCells[i, j].MType == CellType.EMPTY || mCells[i, j + 1].MType == CellType.EMPTY) continue;
+                    if (mCells[i, j].IsEmpty() || mCells[i, j + 1].IsEmpty()) continue;
                     detected = CheckMatchableHorz(mBlocks[i, j], mBlocks[i, j + 1], i, j, i, j + 1);
                 }
                 if (detected) {
@@ -447,7 +446,7 @@ public class Board
                 }
                 if (i + 1 < mRow)
                 {
-                    if (mCells[i, j].MType == CellType.EMPTY || mCells[i + 1, j].MType == CellType.EMPTY) continue;
+                    if (mCells[i, j].IsEmpty() || mCells[i + 1, j].IsEmpty()) continue;
                     detected = detected || CheckMatchableVert(mBlocks[i, j], mBlocks[i + 1, j], i, j, i + 1, j);
                 }
                 if (detected)
@@ -471,21 +470,33 @@ public class Board
     {
         if (col + 3 < mCol)
         {
-            if (block.IsMatchable(mBlocks[row, col + 2], mBlocks[row, col + 3])) return true;
+            if (!mCells[row, col + 2].IsEmpty() && !mCells[row, col + 3].IsEmpty())
+            {
+                if (block.IsMatchable(mBlocks[row, col + 2], mBlocks[row, col + 3])) return true;
+            }
         }
         if (col + 1 < mCol)
         {
             if (row + 2 < mRow)
             {
-                if (block.IsMatchable(mBlocks[row+1, col + 1], mBlocks[row+2, col + 1])) return true;
+                if (!mCells[row + 1, col + 1].IsEmpty() && !mCells[row + 2, col + 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row + 1, col + 1], mBlocks[row + 2, col + 1])) return true;
+                }
             }
             if (row >= 2)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row - 2, col + 1])) return true;
+                if (!mCells[row - 1, col + 1].IsEmpty() && !mCells[row - 2, col + 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row - 2, col + 1])) return true;
+                }
             }
             if(row+1<mRow&&row>=1)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row + 1, col + 1])) return true;
+                if (!mCells[row - 1, col + 1].IsEmpty() && !mCells[row + 1, col + 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row + 1, col + 1])) return true;
+                }
             }
         }
         return false;
@@ -494,21 +505,33 @@ public class Board
     {
         if (col >= 3)
         {
-            if (block.IsMatchable(mBlocks[row, col - 2], mBlocks[row, col - 3])) return true;
+            if (!mCells[row, col - 2].IsEmpty() && !mCells[row, col - 3].IsEmpty())
+            {
+                if (block.IsMatchable(mBlocks[row, col - 2], mBlocks[row, col - 3])) return true;
+            }
         }
         if (col >= 1)
         {
             if (row + 2 < mRow)
             {
-                if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row + 2, col - 1])) return true;
+                if (!mCells[row + 1, col - 1].IsEmpty() && !mCells[row + 2, col - 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row + 2, col - 1])) return true;
+                }
             }
             if (row >= 2)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 2, col - 1])) return true;
+                if (!mCells[row - 1, col - 1].IsEmpty() && !mCells[row - 2, col - 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 2, col - 1])) return true;
+                }
             }
             if (row + 1 < mRow && row >= 1)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row + 1, col - 1])) return true;
+                if (!mCells[row - 1, col - 1].IsEmpty() && !mCells[row + 1, col - 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row + 1, col - 1])) return true;
+                }
             }
         }
         return false;
@@ -517,21 +540,33 @@ public class Board
     {
         if (row + 3 < mRow)
         {
-            if (block.IsMatchable(mBlocks[row+2, col], mBlocks[row+3, col])) return true;
+            if (!mCells[row + 2, col].IsEmpty() && !mCells[row + 3, col].IsEmpty())
+            {
+                if (block.IsMatchable(mBlocks[row + 2, col], mBlocks[row + 3, col])) return true;
+            }
         }
         if (row + 1 < mRow)
         {
             if (col + 2 < mCol)
             {
-                if (block.IsMatchable(mBlocks[row + 1, col + 1], mBlocks[row + 1, col + 2])) return true;
+                if (!mCells[row + 1, col + 1].IsEmpty() && !mCells[row + 1, col + 2].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row + 1, col + 1], mBlocks[row + 1, col + 2])) return true;
+                }
             }
             if (col >= 2)
             {
-                if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row +1, col - 2])) return true;
+                if (!mCells[row + 1, col - 1].IsEmpty() && !mCells[row + 1, col - 2].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row + 1, col - 2])) return true;
+                }
             }
             if (col + 1 < mCol && col >= 1)
             {
-                if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row + 1, col + 1])) return true;
+                if (!mCells[row + 1, col - 1].IsEmpty() && !mCells[row + 1, col + 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row + 1, col - 1], mBlocks[row + 1, col + 1])) return true;
+                }
             }
         }
         return false;
@@ -540,27 +575,36 @@ public class Board
     {
         if (row  >=3)
         {
-            if (block.IsMatchable(mBlocks[row - 2, col], mBlocks[row - 3, col])) return true;
+            if (!mCells[row - 2, col].IsEmpty() && !mCells[row - 3, col].IsEmpty())
+            {
+                if (block.IsMatchable(mBlocks[row - 2, col], mBlocks[row - 3, col])) return true;
+            }
         }
         if (row >=1)
         {
             if (col + 2 < mCol)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row - 1, col + 2])) return true;
+                if (!mCells[row - 1, col + 1].IsEmpty() && !mCells[row - 1, col + 2].IsEmpty())
+                {
+                    
+                    if (block.IsMatchable(mBlocks[row - 1, col + 1], mBlocks[row - 1, col + 2])) return true;
+                }
             }
             if (col >= 2)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 1, col - 2])) return true;
+                if (!mCells[row - 1, col - 1].IsEmpty() && !mCells[row - 1, col - 2].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 1, col - 2])) return true;
+                }
             }
             if (col + 1 < mCol && col >= 1)
             {
-                if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 1, col + 1])) return true;
+                if (!mCells[row - 1, col - 1].IsEmpty() && !mCells[row - 1, col + 1].IsEmpty())
+                {
+                    if (block.IsMatchable(mBlocks[row - 1, col - 1], mBlocks[row - 1, col + 1])) return true;
+                }
             }
         }
-        return false;
-    }
-    public bool ChMatchableUp (Block block, int row, int col)
-    {
         return false;
     }
 }

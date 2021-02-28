@@ -16,7 +16,7 @@ public class CellObj : MonoBehaviour
     }
     public void UpdateView(bool pValueChanged)
     {
-        if (mCell.MType == CellType.EMPTY)
+        if (mCell.IsEmpty())
         {
             mSprite.sprite = null;
         }

@@ -8,9 +8,9 @@ public class StageUIManager : SingletonBase<StageUIManager>
 {
     private const string textClear = "Stage Clear!";
     private const string textFail = "Stage Fail...";
-    private bool onResume = false;
+    private bool onWindow = false;
     private int continueCount= 2;
-    public bool OnResume { get { return onResume; } }
+    public bool OnWindow { get { return onWindow; } }
 
     public UnityEvent RetryEvent;
 
@@ -51,18 +51,20 @@ public class StageUIManager : SingletonBase<StageUIManager>
         if (p)
         {
             Panel_Pause.SetActive(true);
-            onResume = true;
+            onWindow = true;
+            Time.timeScale = 0;
         }
         else
         {
 
-            Panel_Pause.SetActive(false); onResume = false;
+            Time.timeScale = 1;
+            Panel_Pause.SetActive(false); onWindow = false;
         }
     }
     public void ContinueGame()
     {
         continueCount--;
-        onResume = false;
+        onWindow = false;
         Panel_Result.SetActive(false);
         Btn_ContinueStage.SetActive(false);
         RetryEvent.Invoke();
@@ -71,7 +73,8 @@ public class StageUIManager : SingletonBase<StageUIManager>
     }
     public void ResultWindowOn(bool isClear)
     {
-        onResume = true;
+        onWindow = true;
+        Time.timeScale = 0;
         Panel_Result.SetActive(true);
         if (isClear)
         {

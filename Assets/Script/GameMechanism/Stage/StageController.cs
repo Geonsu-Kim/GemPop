@@ -43,7 +43,7 @@ public class StageController : MonoBehaviour
     }
     void OnInputHandler()
     {
-        if (StageUIManager.Instance.OnResume) return;
+        if (StageUIManager.Instance.OnWindow) return;
         if (!mTouchDown && mInput.isDown)
         {
             Vector2 point = mInput.PosToBoard;

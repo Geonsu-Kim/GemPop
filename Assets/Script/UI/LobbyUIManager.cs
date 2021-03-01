@@ -23,18 +23,5 @@ public class LobbyUIManager : SingletonBase<LobbyUIManager>
     {
         Application.Quit();
     }
-    public void OnLogin()
-    {
-        Social.localUser.Authenticate((bool _bSuccess) =>
-        {
-            if (true == _bSuccess)
-            {
-                LogText.text = "Success!";
-            }
-            else
-            {
-                LogText.text = "Fail...";
-            }
-        });
-    }
+
 }

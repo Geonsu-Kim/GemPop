@@ -9,9 +9,17 @@ public class InitGame : MonoBehaviour
     void Start()
     {
         PlayGamesPlatform.Activate();
+        Social.localUser.Authenticate((bool _bSuccess) =>
+        {
+            if (true == _bSuccess)
+            {
+            }
+            else
+            {
+            }
+        });
         StageInfoList.Initialization();
 
         SceneManager.LoadScene("scLobby");
     }
-
 }

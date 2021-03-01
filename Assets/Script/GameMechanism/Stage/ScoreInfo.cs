@@ -51,7 +51,7 @@ public class ScoreInfo
     }
     public bool CheckScore()
     {
-        return mCurScore > mScore;
+        return mCurScore >= mScore;
     }
     public void ContinueGame()
     {

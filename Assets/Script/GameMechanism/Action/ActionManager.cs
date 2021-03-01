@@ -59,7 +59,11 @@ public class ActionManager
                     yield return mStage.CheckDeadlock(nextMatchable);
                     if (!nextMatchable.value)
                     {
+                        StageUIManager.Instance.AlarmDeadlock(true);
+                        yield return YieldInstructionCache.WaitForSeconds(1.5f);
                         mStage.ResetDeadlock(mParent);
+                        StageUIManager.Instance.AlarmDeadlock(false);
+
                     }
                     mStage.CheckGameEnd();
                 }

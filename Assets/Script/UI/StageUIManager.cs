@@ -24,6 +24,7 @@ public class StageUIManager : SingletonBase<StageUIManager>
     public Image BackGround;
     public GameObject Panel_Pause;
     public GameObject Panel_Result;
+    public GameObject Panel_DeadlockAlarm;
     public GameObject Btn_NextStage;
     public GameObject Btn_ContinueStage;
 
@@ -94,6 +95,21 @@ public class StageUIManager : SingletonBase<StageUIManager>
     public void SetStageTitle(int num)
     {
         Text_StageTitle.text= string.Format("STAGE {0:D2}", num);
+    }
+    public void AlarmDeadlock(bool active)
+    {
+        if (active)
+        {
+            Panel_DeadlockAlarm.SetActive(true);
+            onWindow = true;
+
+        }
+        else
+        {
+
+            Panel_DeadlockAlarm.SetActive(false);
+            onWindow = false;
+        }
     }
     public void OnClickToLobby()
     {

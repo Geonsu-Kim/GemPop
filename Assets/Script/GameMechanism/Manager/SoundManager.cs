@@ -11,12 +11,11 @@ public class SoundManager : SingletonBase<SoundManager>
     AudioSource BGMsource;
     AudioSource[] SFXSources;
     private void OnEnable()
-    {/*
+    {
         BGMsource = gameObject.AddComponent<AudioSource>();
         BGMsource.playOnAwake = false;
-        BGMsource.volume = 1;
+        BGMsource.volume =0.4f;
         BGMsource.loop = true;
-        PlayBGM(BGM[0].name);*/
         SFXSources = new AudioSource[maxSFXSource];
         for (int i = 0; i < SFXSources.Length; i++)
         {
@@ -26,7 +25,17 @@ public class SoundManager : SingletonBase<SoundManager>
             SFXSources[i].loop = false;
         }
     }
-    public void PlayBGM(string name, bool isLoop = true, float volume = 1.0f)
+    public void PlayBGM(int n, bool isLoop = true, float volume = 0.4f)
+    {
+        BGMsource.clip = BGM[n];
+
+        BGMsource.volume = volume;
+        BGMsource.loop = isLoop;
+        BGMsource.Play();
+        return;
+
+    }
+    public void PlayBGM(string name, bool isLoop = true, float volume = 0.4f)
     {
         for (int i = 0; i < BGM.Count; i++)
         {

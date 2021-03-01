@@ -79,6 +79,7 @@ public class StageUIManager : SingletonBase<StageUIManager>
         if (isClear)
         {
             Btn_NextStage.SetActive(true);
+            Btn_ContinueStage.SetActive(false);
             Text_StageClear.text = textClear;
         }
         else 

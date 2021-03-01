@@ -11,6 +11,7 @@ public class LobbyUIManager : SingletonBase<LobbyUIManager>
     public TextMeshProUGUI LogText;
     public void Start()
     {
+        SoundManager.Instance.PlayBGM(0);
         for (int i = 0; i < StageInfoList.recordList.Count; i++)
         {
             if (i != 0 && !StageInfoList.recordList[i - 1].MClear) break;

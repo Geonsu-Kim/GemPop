@@ -18,6 +18,7 @@ public class StageController : MonoBehaviour
     public int MStageNumber { get { return mStageNumber; } set { mStageNumber = value; } }
     void Start()
     {
+        SoundManager.Instance.PlayBGM(SoundManager.Instance.BGM[(StageInfoList.GetNumber() - 1) % SoundManager.Instance.BGM.Count].name);
         InitStage();
         StartCoroutine(CheckIdle());
     }

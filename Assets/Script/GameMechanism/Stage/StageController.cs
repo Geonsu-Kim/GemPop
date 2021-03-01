@@ -43,6 +43,7 @@ public class StageController : MonoBehaviour
     }
     void OnInputHandler()
     {
+        if (StageUIManager.Instance.OnResume) return;
         if (!mTouchDown && mInput.isDown)
         {
             Vector2 point = mInput.PosToBoard;
@@ -86,5 +87,9 @@ public class StageController : MonoBehaviour
                 mCheckedNavi = true;
             }
         }
+    }
+    public void ContinueGame()
+    {
+        mStage.ContinueGame();
     }
 }

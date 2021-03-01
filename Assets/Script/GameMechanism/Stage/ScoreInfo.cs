@@ -53,7 +53,10 @@ public class ScoreInfo
     {
         return mCurScore > mScore;
     }
-
+    public void ContinueGame()
+    {
+        mCurMoveCnt = 5;
+    }
 
 
 }

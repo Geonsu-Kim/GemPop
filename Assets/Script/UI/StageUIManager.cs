@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 public class StageUIManager : SingletonBase<StageUIManager>
 {
     private const string textClear = "Stage Clear!";
     private const string textFail = "Stage Fail...";
+    private bool onResume = false;
+    private int continueCount= 2;
+    public bool OnResume { get { return onResume; } }
 
-
+    public UnityEvent RetryEvent;
 
     public TextMeshProUGUI Text_MoveCnt;
     public TextMeshProUGUI Text_Score;
@@ -21,6 +25,7 @@ public class StageUIManager : SingletonBase<StageUIManager>
     public GameObject Panel_Pause;
     public GameObject Panel_Result;
     public GameObject Btn_NextStage;
+    public GameObject Btn_ContinueStage;
 
     public BackGroundConfig config;
     public void Start()
@@ -46,18 +51,27 @@ public class StageUIManager : SingletonBase<StageUIManager>
         if (p)
         {
             Panel_Pause.SetActive(true);
-            Time.timeScale = 0;
+            onResume = true;
         }
         else
         {
 
-            Panel_Pause.SetActive(false);
-            Time.timeScale = 1;
+            Panel_Pause.SetActive(false); onResume = false;
         }
+    }
+    public void ContinueGame()
+    {
+        continueCount--;
+        onResume = false;
+        Panel_Result.SetActive(false);
+        Btn_ContinueStage.SetActive(false);
+        RetryEvent.Invoke();
+        RenewMoveCnt(5);
+
     }
     public void ResultWindowOn(bool isClear)
     {
-        Time.timeScale = 0;
+        onResume = true;
         Panel_Result.SetActive(true);
         if (isClear)
         {
@@ -65,7 +79,9 @@ public class StageUIManager : SingletonBase<StageUIManager>
             Text_StageClear.text = textClear;
         }
         else 
-        { 
+        {
+            if (continueCount >= 1) Btn_ContinueStage.SetActive(true);
+            else Btn_NextStage.SetActive(false);
             Btn_NextStage.SetActive(false);
             Text_StageClear.text = textFail;
         }

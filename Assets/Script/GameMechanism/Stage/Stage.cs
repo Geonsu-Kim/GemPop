@@ -159,4 +159,8 @@ public class Stage
     {
         mInfo.CheckGameEnd();
     }
+    public void ContinueGame()
+    {
+        mInfo.ContinueGame();
+    }
 }

@@ -13,11 +13,13 @@ public class InitGame : MonoBehaviour
         {
             if (true == _bSuccess)
             {
+                Social.ReportProgress(GPGSIds.Login, 100f, (bool b) => { });
             }
             else
             {
             }
         });
+        PlayerData.Load();
         StageInfoList.Initialization();
 
         SceneManager.LoadScene("scLobby");

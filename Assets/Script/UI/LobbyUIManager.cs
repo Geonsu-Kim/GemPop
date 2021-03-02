@@ -24,5 +24,13 @@ public class LobbyUIManager : SingletonBase<LobbyUIManager>
     {
         Application.Quit();
     }
+    public void OnClickLeaderBoard()
+    {
+        Social.ShowLeaderboardUI();
+    }
+    public void OnClickAchievement()
+    {
+        Social.ShowAchievementsUI();
+    }
 
 }

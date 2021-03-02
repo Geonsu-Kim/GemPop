@@ -13,7 +13,7 @@ public class ADManager : SingletonBase<ADManager>
 
     void Start()
     {
-        rewardedAd = new RewardedAd(rewardTestID);
+        rewardedAd = new RewardedAd(rewardID);
         AdRequest request = new AdRequest.Builder().Build();
         rewardedAd.LoadAd(request); // 광고 로드
 
@@ -40,7 +40,7 @@ public class ADManager : SingletonBase<ADManager>
 
     public void CreateAndLoadRewardedAd() 
     {
-        rewardedAd = new RewardedAd(rewardTestID);
+        rewardedAd = new RewardedAd(rewardID);
 
         rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         rewardedAd.OnAdClosed += HandleRewardedAdClosed;

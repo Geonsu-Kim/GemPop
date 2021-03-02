@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine;
 public class ScoreInfo
 {
     private int mScore;
@@ -41,6 +41,7 @@ public class ScoreInfo
         else if (CheckScore())
         {
             SoundManager.Instance.PlaySFX("StageClear");
+            PlayerData.RenewData(mCurScore);
             StageInfoList.RenewRecord(mCurScore);
             StageUIManager.Instance.ResultWindowOn(true);
         }

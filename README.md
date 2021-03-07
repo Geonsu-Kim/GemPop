@@ -6,7 +6,9 @@ GemPop
 
 
 
-3매치 퍼즐 게임입니다. 구글 플레이 출시가 예정되어 있습니다.
+3매치 퍼즐 게임입니다. 구글 플레이에 출시되어 있습니다. 
+
+[플레이하러 가기](https://play.google.com/store/apps/details?id=com.GeonsuKim.GemPop)
 
 Git 저장소에는 프로젝트의 소스파일만 저장되어 있습니다.
 

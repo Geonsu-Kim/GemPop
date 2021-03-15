@@ -10,7 +10,7 @@ GemPop
 
 [플레이하러 가기](https://play.google.com/store/apps/details?id=com.GeonsuKim.GemPop)
 
-[기술 문서](https://drive.google.com/file/d/1IHLjvOYJcWbF41KV2jMPQxqiMsyEoR2p/view?usp=sharing)
+[기술 문서](https://drive.google.com/file/d/1lh20bt9pkwgDuqzHUUMHkdZjRpN1Bg4P/view?usp=sharing)
 
 Git 저장소에는 프로젝트의 소스파일만 저장되어 있습니다.
 
